@@ -1,16 +1,28 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react"
-import { toast } from "sonner"
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { MapPin, Phone, Mail, Clock, Send, MessageCircle } from "lucide-react";
+import { toast } from "sonner";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -19,24 +31,24 @@ export default function ContactPage() {
     phone: "",
     subject: "",
     message: "",
-  })
-  const [loading, setLoading] = useState(false)
+  });
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
     // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    toast.success("Message sent successfully! We'll get back to you soon.")
-    setFormData({ name: "", email: "", phone: "", subject: "", message: "" })
-    setLoading(false)
-  }
+    toast.success("Message sent successfully! We'll get back to you soon.");
+    setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+    setLoading(false);
+  };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
-  }
+    setFormData(prev => ({ ...prev, [field]: value }));
+  };
 
   const contactInfo = [
     {
@@ -60,10 +72,14 @@ export default function ContactPage() {
     {
       icon: Clock,
       title: "Business Hours",
-      details: ["Mon - Fri: 9:00 AM - 6:00 PM", "Sat: 10:00 AM - 4:00 PM", "Sun: Closed"],
+      details: [
+        "Mon - Fri: 9:00 AM - 6:00 PM",
+        "Sat: 10:00 AM - 4:00 PM",
+        "Sun: Closed",
+      ],
       color: "text-secondary-foreground",
     },
-  ]
+  ];
 
   const subjects = [
     "General Inquiry",
@@ -73,19 +89,21 @@ export default function ContactPage() {
     "Technical Support",
     "Partnership Opportunity",
     "Other",
-  ]
+  ];
 
   return (
     <div className="min-h-screen">
-
       <main>
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-primary/10 via-secondary/5 to-primary/10 py-16">
           <div className="container mx-auto px-4 text-center">
-            <h1 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-balance">Get In Touch</h1>
+            <h1 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-balance">
+              Get In Touch
+            </h1>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Have questions about our products or services? Want to book an appointment or learn about our training
-              courses? We'd love to hear from you and help you on your beauty journey.
+              Have questions about our products or services? Want to book an
+              appointment or learn about our training courses? We'd love to hear
+              from you and help you on your beauty journey.
             </p>
           </div>
         </section>
@@ -95,7 +113,10 @@ export default function ContactPage() {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
               {contactInfo.map((info, index) => (
-                <Card key={index} className="text-center hover:shadow-lg transition-shadow">
+                <Card
+                  key={index}
+                  className="text-center hover:shadow-lg transition-shadow"
+                >
                   <CardHeader>
                     <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
                       <info.icon className={`h-8 w-8 ${info.color}`} />
@@ -125,7 +146,8 @@ export default function ContactPage() {
                     Send Us a Message
                   </CardTitle>
                   <CardDescription>
-                    Fill out the form below and we'll get back to you as soon as possible.
+                    Fill out the form below and we'll get back to you as soon as
+                    possible.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -138,7 +160,9 @@ export default function ContactPage() {
                           type="text"
                           placeholder="Your full name"
                           value={formData.name}
-                          onChange={(e) => handleInputChange("name", e.target.value)}
+                          onChange={e =>
+                            handleInputChange("name", e.target.value)
+                          }
                           required
                         />
                       </div>
@@ -149,7 +173,9 @@ export default function ContactPage() {
                           type="email"
                           placeholder="your.email@example.com"
                           value={formData.email}
-                          onChange={(e) => handleInputChange("email", e.target.value)}
+                          onChange={e =>
+                            handleInputChange("email", e.target.value)
+                          }
                           required
                         />
                       </div>
@@ -163,17 +189,24 @@ export default function ContactPage() {
                           type="tel"
                           placeholder="+234 (0) 123 456 7890"
                           value={formData.phone}
-                          onChange={(e) => handleInputChange("phone", e.target.value)}
+                          onChange={e =>
+                            handleInputChange("phone", e.target.value)
+                          }
                         />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="subject">Subject *</Label>
-                        <Select value={formData.subject} onValueChange={(value) => handleInputChange("subject", value)}>
+                        <Select
+                          value={formData.subject}
+                          onValueChange={value =>
+                            handleInputChange("subject", value)
+                          }
+                        >
                           <SelectTrigger>
                             <SelectValue placeholder="Select a subject" />
                           </SelectTrigger>
                           <SelectContent>
-                            {subjects.map((subject) => (
+                            {subjects.map(subject => (
                               <SelectItem key={subject} value={subject}>
                                 {subject}
                               </SelectItem>
@@ -190,7 +223,9 @@ export default function ContactPage() {
                         placeholder="Tell us how we can help you..."
                         rows={5}
                         value={formData.message}
-                        onChange={(e) => handleInputChange("message", e.target.value)}
+                        onChange={e =>
+                          handleInputChange("message", e.target.value)
+                        }
                         required
                       />
                     </div>
@@ -213,9 +248,12 @@ export default function ContactPage() {
               <div className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-2xl font-serif">Find Us</CardTitle>
+                    <CardTitle className="text-2xl font-serif">
+                      Find Us
+                    </CardTitle>
                     <CardDescription>
-                      Visit our studio for personalized consultations and hands-on product demonstrations.
+                      Visit our studio for personalized consultations and
+                      hands-on product demonstrations.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -223,7 +261,9 @@ export default function ContactPage() {
                       <div className="text-center">
                         <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-2" />
                         <p className="text-muted-foreground">Interactive Map</p>
-                        <p className="text-sm text-muted-foreground">123 Beauty Street, Victoria Island, Lagos</p>
+                        <p className="text-sm text-muted-foreground">
+                          123 Beauty Street, Victoria Island, Lagos
+                        </p>
                       </div>
                     </div>
                     <div className="space-y-3">
@@ -241,12 +281,15 @@ export default function ContactPage() {
 
                 <Card className="bg-gradient-to-br from-primary/5 to-secondary/5">
                   <CardHeader>
-                    <CardTitle className="text-xl">Quick Response Guarantee</CardTitle>
+                    <CardTitle className="text-xl">
+                      Quick Response Guarantee
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground text-sm leading-relaxed">
-                      We typically respond to all inquiries within 24 hours during business days. For urgent matters,
-                      please call us directly at +234 (0) 123 456 7890.
+                      We typically respond to all inquiries within 24 hours
+                      during business days. For urgent matters, please call us
+                      directly at +234 (0) 123 456 7890.
                     </p>
                   </CardContent>
                 </Card>
@@ -259,57 +302,70 @@ export default function ContactPage() {
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+                Frequently Asked Questions
+              </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Quick answers to common questions about our products and services
+                Quick answers to common questions about our products and
+                services
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Do you offer training courses?</CardTitle>
+                  <CardTitle className="text-lg">
+                    Do you offer training courses?
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground text-sm">
-                    Yes! We offer comprehensive training courses in microblading, lash extensions, and other beauty
-                    techniques. All courses include certification upon completion.
+                    Yes! We offer comprehensive training courses in
+                    microblading, lash extensions, and other beauty techniques.
+                    All courses include certification upon completion.
                   </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">What payment methods do you accept?</CardTitle>
+                  <CardTitle className="text-lg">
+                    What payment methods do you accept?
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground text-sm">
-                    We accept all major credit cards, bank transfers, and mobile payment platforms including Paystack
-                    and Flutterwave.
+                    We accept all major credit cards, bank transfers, and mobile
+                    payment platforms including Paystack and Flutterwave.
                   </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Do you ship nationwide?</CardTitle>
+                  <CardTitle className="text-lg">
+                    Do you ship nationwide?
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground text-sm">
-                    Yes, we ship to all states in Nigeria. Delivery typically takes 2-5 business days depending on your
-                    location.
+                    Yes, we ship to all states in Nigeria. Delivery typically
+                    takes 2-5 business days depending on your location.
                   </p>
                 </CardContent>
               </Card>
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-lg">Can I book appointments online?</CardTitle>
+                  <CardTitle className="text-lg">
+                    Can I book appointments online?
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground text-sm">
-                    You can book appointments for all our services directly through our website. We'll confirm your
-                    booking within 24 hours.
+                    You can book appointments for all our services directly
+                    through our website. We'll confirm your booking within 24
+                    hours.
                   </p>
                 </CardContent>
               </Card>
@@ -317,7 +373,6 @@ export default function ContactPage() {
           </div>
         </section>
       </main>
-
     </div>
-  )
+  );
 }

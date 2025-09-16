@@ -1,49 +1,55 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
-import { toast } from "sonner"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { toast } from "sonner";
 
 interface Category {
-  id: string
-  name: string
-  slug: string
+  id: string;
+  name: string;
+  slug: string;
 }
 
 interface Product {
-  id?: string
-  name: string
-  description: string
-  short_description: string
-  price: number
-  compare_price?: number
-  sku: string
-  quantity: number
-  category_id: string
-  image_url?: string
-  tags: string[]
-  is_featured: boolean
-  is_active: boolean
-  slug: string
+  id?: string;
+  name: string;
+  description: string;
+  short_description: string;
+  price: number;
+  compare_price?: number;
+  sku: string;
+  quantity: number;
+  category_id: string;
+  image_url?: string;
+  tags: string[];
+  is_featured: boolean;
+  is_active: boolean;
+  slug: string;
 }
 
 interface ProductFormProps {
-  categories: Category[]
-  product?: Product
+  categories: Category[];
+  product?: Product;
 }
 
 export function ProductForm({ categories, product }: ProductFormProps) {
-  const router = useRouter()
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState<Product>({
     name: product?.name || "",
     description: product?.description || "",
@@ -58,38 +64,40 @@ export function ProductForm({ categories, product }: ProductFormProps) {
     is_featured: product?.is_featured || false,
     is_active: product?.is_active || true,
     slug: product?.slug || "",
-  })
+  });
 
   const generateSlug = (name: string) => {
     return name
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "")
-  }
+      .replace(/(^-|-$)/g, "");
+  };
 
   const handleInputChange = (field: keyof Product, value: any) => {
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
       [field]: value,
       ...(field === "name" && !product ? { slug: generateSlug(value) } : {}),
-    }))
-  }
+    }));
+  };
 
   const handleTagsChange = (value: string) => {
     const tags = value
       .split(",")
-      .map((tag) => tag.trim())
-      .filter(Boolean)
-    setFormData((prev) => ({ ...prev, tags }))
-  }
+      .map(tag => tag.trim())
+      .filter(Boolean);
+    setFormData(prev => ({ ...prev, tags }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
+    e.preventDefault();
+    setIsSubmitting(true);
 
     try {
-      const url = product ? `/api/admin/products/${product.id}` : "/api/admin/products"
-      const method = product ? "PUT" : "POST"
+      const url = product
+        ? `/api/admin/products/${product.id}`
+        : "/api/admin/products";
+      const method = product ? "PUT" : "POST";
 
       const response = await fetch(url, {
         method,
@@ -97,21 +105,25 @@ export function ProductForm({ categories, product }: ProductFormProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      })
+      });
 
       if (response.ok) {
-        toast.success(product ? "Product updated successfully" : "Product created successfully")
-        router.push("/admin/products")
+        toast.success(
+          product
+            ? "Product updated successfully"
+            : "Product created successfully"
+        );
+        router.push("/admin/products");
       } else {
-        const error = await response.json()
-        toast.error(error.error || "Failed to save product")
+        const error = await response.json();
+        toast.error(error.error || "Failed to save product");
       }
     } catch (error) {
-      toast.error("Failed to save product")
+      toast.error("Failed to save product");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -128,7 +140,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                 <Input
                   id="name"
                   value={formData.name}
-                  onChange={(e) => handleInputChange("name", e.target.value)}
+                  onChange={e => handleInputChange("name", e.target.value)}
                   required
                 />
               </div>
@@ -137,7 +149,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                 <Input
                   id="sku"
                   value={formData.sku}
-                  onChange={(e) => handleInputChange("sku", e.target.value)}
+                  onChange={e => handleInputChange("sku", e.target.value)}
                   required
                 />
               </div>
@@ -148,7 +160,9 @@ export function ProductForm({ categories, product }: ProductFormProps) {
               <Input
                 id="short_description"
                 value={formData.short_description}
-                onChange={(e) => handleInputChange("short_description", e.target.value)}
+                onChange={e =>
+                  handleInputChange("short_description", e.target.value)
+                }
                 placeholder="Brief product description"
               />
             </div>
@@ -158,7 +172,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
               <Textarea
                 id="description"
                 value={formData.description}
-                onChange={(e) => handleInputChange("description", e.target.value)}
+                onChange={e => handleInputChange("description", e.target.value)}
                 rows={4}
                 required
               />
@@ -169,7 +183,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
               <Input
                 id="image_url"
                 value={formData.image_url}
-                onChange={(e) => handleInputChange("image_url", e.target.value)}
+                onChange={e => handleInputChange("image_url", e.target.value)}
                 placeholder="https://example.com/image.jpg"
               />
             </div>
@@ -189,7 +203,9 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                   id="price"
                   type="number"
                   value={formData.price}
-                  onChange={(e) => handleInputChange("price", Number(e.target.value))}
+                  onChange={e =>
+                    handleInputChange("price", Number(e.target.value))
+                  }
                   required
                 />
               </div>
@@ -199,7 +215,9 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                   id="compare_price"
                   type="number"
                   value={formData.compare_price}
-                  onChange={(e) => handleInputChange("compare_price", Number(e.target.value))}
+                  onChange={e =>
+                    handleInputChange("compare_price", Number(e.target.value))
+                  }
                 />
               </div>
               <div>
@@ -208,7 +226,9 @@ export function ProductForm({ categories, product }: ProductFormProps) {
                   id="quantity"
                   type="number"
                   value={formData.quantity}
-                  onChange={(e) => handleInputChange("quantity", Number(e.target.value))}
+                  onChange={e =>
+                    handleInputChange("quantity", Number(e.target.value))
+                  }
                   required
                 />
               </div>
@@ -224,12 +244,15 @@ export function ProductForm({ categories, product }: ProductFormProps) {
           <CardContent className="space-y-4">
             <div>
               <Label htmlFor="category">Category</Label>
-              <Select value={formData.category_id} onValueChange={(value) => handleInputChange("category_id", value)}>
+              <Select
+                value={formData.category_id}
+                onValueChange={value => handleInputChange("category_id", value)}
+              >
                 <SelectTrigger>
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
                 <SelectContent>
-                  {categories.map((category) => (
+                  {categories.map(category => (
                     <SelectItem key={category.id} value={category.id}>
                       {category.name}
                     </SelectItem>
@@ -243,7 +266,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
               <Input
                 id="tags"
                 value={formData.tags.join(", ")}
-                onChange={(e) => handleTagsChange(e.target.value)}
+                onChange={e => handleTagsChange(e.target.value)}
                 placeholder="beauty, professional, tools"
               />
             </div>
@@ -253,7 +276,7 @@ export function ProductForm({ categories, product }: ProductFormProps) {
               <Input
                 id="slug"
                 value={formData.slug}
-                onChange={(e) => handleInputChange("slug", e.target.value)}
+                onChange={e => handleInputChange("slug", e.target.value)}
                 required
               />
             </div>
@@ -270,7 +293,9 @@ export function ProductForm({ categories, product }: ProductFormProps) {
               <Checkbox
                 id="is_featured"
                 checked={formData.is_featured}
-                onCheckedChange={(checked) => handleInputChange("is_featured", checked)}
+                onCheckedChange={checked =>
+                  handleInputChange("is_featured", checked)
+                }
               />
               <Label htmlFor="is_featured">Featured Product</Label>
             </div>
@@ -279,7 +304,9 @@ export function ProductForm({ categories, product }: ProductFormProps) {
               <Checkbox
                 id="is_active"
                 checked={formData.is_active}
-                onCheckedChange={(checked) => handleInputChange("is_active", checked)}
+                onCheckedChange={checked =>
+                  handleInputChange("is_active", checked)
+                }
               />
               <Label htmlFor="is_active">Active (visible to customers)</Label>
             </div>
@@ -289,7 +316,11 @@ export function ProductForm({ categories, product }: ProductFormProps) {
         {/* Submit Button */}
         <div className="flex gap-4">
           <Button type="submit" disabled={isSubmitting} className="flex-1">
-            {isSubmitting ? "Saving..." : product ? "Update Product" : "Create Product"}
+            {isSubmitting
+              ? "Saving..."
+              : product
+                ? "Update Product"
+                : "Create Product"}
           </Button>
           <Button type="button" variant="outline" onClick={() => router.back()}>
             Cancel
@@ -297,5 +328,5 @@ export function ProductForm({ categories, product }: ProductFormProps) {
         </div>
       </div>
     </form>
-  )
+  );
 }

@@ -1,7 +1,14 @@
-import Link from "next/link"
-import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import Link from "next/link";
+import {
+  Facebook,
+  Instagram,
+  Twitter,
+  Mail,
+  Phone,
+  MapPin,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function Footer() {
   return (
@@ -12,15 +19,18 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center shadow-lg">
-                <span className="text-primary-foreground font-bold text-sm">MG</span>
+                <span className="text-primary-foreground font-bold text-sm">
+                  MG
+                </span>
               </div>
               <span className="font-serif text-xl font-bold text-primary">
                 Beauty Palace
               </span>
             </div>
             <p className="text-sm text-slate-300 leading-relaxed">
-              Your premier destination for professional beauty tools, microblading equipment, lash extensions, and
-              expert beauty services in Nigeria.
+              Your premier destination for professional beauty tools,
+              microblading equipment, lash extensions, and expert beauty
+              services in Nigeria.
             </p>
             <div className="flex space-x-4">
               <Button
@@ -52,27 +62,42 @@ export function Footer() {
             <h3 className="font-semibold text-slate-100">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/products" className="text-sm text-slate-300 hover:text-primary transition-colors">
+                <Link
+                  href="/products"
+                  className="text-sm text-slate-300 hover:text-primary transition-colors"
+                >
                   All Products
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-sm text-slate-300 hover:text-primary transition-colors">
+                <Link
+                  href="/services"
+                  className="text-sm text-slate-300 hover:text-primary transition-colors"
+                >
                   Beauty Services
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-sm text-slate-300 hover:text-primary transition-colors">
+                <Link
+                  href="/about"
+                  className="text-sm text-slate-300 hover:text-primary transition-colors"
+                >
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-sm text-slate-300 hover:text-primary transition-colors">
+                <Link
+                  href="/contact"
+                  className="text-sm text-slate-300 hover:text-primary transition-colors"
+                >
                   Contact
                 </Link>
               </li>
               <li>
-                <Link href="/account/appointments" className="text-sm text-slate-300 hover:text-primary transition-colors">
+                <Link
+                  href="/account/appointments"
+                  className="text-sm text-slate-300 hover:text-primary transition-colors"
+                >
                   Book Appointment
                 </Link>
               </li>
@@ -84,7 +109,10 @@ export function Footer() {
             <h3 className="font-semibold text-slate-100">Customer Service</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/account" className="text-sm text-slate-300 hover:text-primary transition-colors">
+                <Link
+                  href="/account"
+                  className="text-sm text-slate-300 hover:text-primary transition-colors"
+                >
                   My Account
                 </Link>
               </li>
@@ -97,17 +125,26 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/shipping" className="text-sm text-slate-300 hover:text-primary transition-colors">
+                <Link
+                  href="/shipping"
+                  className="text-sm text-slate-300 hover:text-primary transition-colors"
+                >
                   Shipping Info
                 </Link>
               </li>
               <li>
-                <Link href="/returns" className="text-sm text-slate-300 hover:text-primary transition-colors">
+                <Link
+                  href="/returns"
+                  className="text-sm text-slate-300 hover:text-primary transition-colors"
+                >
                   Returns & Exchanges
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="text-sm text-slate-300 hover:text-primary transition-colors">
+                <Link
+                  href="/faq"
+                  className="text-sm text-slate-300 hover:text-primary transition-colors"
+                >
                   FAQ
                 </Link>
               </li>
@@ -150,20 +187,31 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <p className="text-sm text-slate-300">© {new Date().getFullYear()} MG Beauty Palace. All rights reserved.</p>
+          <p className="text-sm text-slate-300">
+            © {new Date().getFullYear()} MG Beauty Palace. All rights reserved.
+          </p>
           <div className="flex space-x-6">
-            <Link href="/privacy" className="text-sm text-slate-300 hover:text-primary transition-colors">
+            <Link
+              href="/privacy"
+              className="text-sm text-slate-300 hover:text-primary transition-colors"
+            >
               Privacy Policy
             </Link>
-            <Link href="/terms" className="text-sm text-slate-300 hover:text-primary transition-colors">
+            <Link
+              href="/terms"
+              className="text-sm text-slate-300 hover:text-primary transition-colors"
+            >
               Terms of Service
             </Link>
-            <Link href="/cookies" className="text-sm text-slate-300 hover:text-primary transition-colors">
+            <Link
+              href="/cookies"
+              className="text-sm text-slate-300 hover:text-primary transition-colors"
+            >
               Cookie Policy
             </Link>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }

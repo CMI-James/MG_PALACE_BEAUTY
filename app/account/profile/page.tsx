@@ -1,23 +1,23 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import { redirect } from "next/navigation"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { createClient } from "@/lib/supabase/client"
-import { ArrowLeft, User, MapPin } from "lucide-react"
-import Link from "next/link"
-import { toast } from "sonner"
+import { useState, useEffect } from "react";
+import { redirect } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { createClient } from "@/lib/supabase/client";
+import { ArrowLeft, User, MapPin } from "lucide-react";
+import Link from "next/link";
+import { toast } from "sonner";
 
 export default function ProfilePage() {
-  const [user, setUser] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -27,25 +27,29 @@ export default function ProfilePage() {
     city: "",
     state: "",
     postal_code: "",
-  })
+  });
 
   useEffect(() => {
     async function getUser() {
-      const supabase = createClient()
+      const supabase = createClient();
 
       const {
         data: { user },
         error,
-      } = await supabase.auth.getUser()
+      } = await supabase.auth.getUser();
 
       if (error || !user) {
-        redirect("/auth/login")
-        return
+        redirect("/auth/login");
+        return;
       }
 
-      const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
 
-      setUser({ ...user, profile })
+      setUser({ ...user, profile });
 
       if (profile) {
         setFormData({
@@ -57,20 +61,20 @@ export default function ProfilePage() {
           city: profile.city || "",
           state: profile.state || "",
           postal_code: profile.postal_code || "",
-        })
+        });
       }
 
-      setLoading(false)
+      setLoading(false);
     }
 
-    getUser()
-  }, [])
+    getUser();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setSaving(true)
+    e.preventDefault();
+    setSaving(true);
 
-    const supabase = createClient()
+    const supabase = createClient();
 
     try {
       const { error } = await supabase.from("profiles").upsert({
@@ -79,40 +83,42 @@ export default function ProfilePage() {
         last_name: formData.last_name,
         phone: formData.phone,
         date_of_birth: formData.date_of_birth,
-      })
+      });
 
-      if (error) throw error
+      if (error) throw error;
 
       if (formData.address && formData.city && formData.state) {
-        const { error: addressError } = await supabase.from("addresses").upsert({
-          user_id: user.id,
-          type: "shipping",
-          first_name: formData.first_name,
-          last_name: formData.last_name,
-          address_line_1: formData.address,
-          city: formData.city,
-          state: formData.state,
-          postal_code: formData.postal_code || "",
-          country: "Nigeria",
-          is_default: true,
-        })
+        const { error: addressError } = await supabase
+          .from("addresses")
+          .upsert({
+            user_id: user.id,
+            type: "shipping",
+            first_name: formData.first_name,
+            last_name: formData.last_name,
+            address_line_1: formData.address,
+            city: formData.city,
+            state: formData.state,
+            postal_code: formData.postal_code || "",
+            country: "Nigeria",
+            is_default: true,
+          });
 
         if (addressError) {
-          console.error("Address update error:", addressError)
-          toast.error("Profile updated but address failed to save")
+          console.error("Address update error:", addressError);
+          toast.error("Profile updated but address failed to save");
         } else {
-          toast.success("Profile and address updated successfully!")
+          toast.success("Profile and address updated successfully!");
         }
       } else {
-        toast.success("Profile updated successfully!")
+        toast.success("Profile updated successfully!");
       }
     } catch (error) {
-      toast.error("Failed to update profile")
-      console.error("Error updating profile:", error)
+      toast.error("Failed to update profile");
+      console.error("Error updating profile:", error);
     } finally {
-      setSaving(false)
+      setSaving(false);
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -121,12 +127,11 @@ export default function ProfilePage() {
           <div className="text-center">Loading...</div>
         </main>
       </div>
-    )
+    );
   }
 
   return (
     <div className="min-h-screen">
-
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
           <div className="mb-8">
@@ -137,8 +142,12 @@ export default function ProfilePage() {
               <ArrowLeft className="h-4 w-4 mr-1" />
               Back to Account
             </Link>
-            <h1 className="font-serif text-3xl md:text-4xl font-bold mb-4">Profile Settings</h1>
-            <p className="text-muted-foreground">Manage your personal information and address details</p>
+            <h1 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+              Profile Settings
+            </h1>
+            <p className="text-muted-foreground">
+              Manage your personal information and address details
+            </p>
           </div>
 
           <div className="space-y-6">
@@ -158,7 +167,12 @@ export default function ProfilePage() {
                       <Input
                         id="first_name"
                         value={formData.first_name}
-                        onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+                        onChange={e =>
+                          setFormData({
+                            ...formData,
+                            first_name: e.target.value,
+                          })
+                        }
                         placeholder="Enter your first name"
                       />
                     </div>
@@ -167,7 +181,12 @@ export default function ProfilePage() {
                       <Input
                         id="last_name"
                         value={formData.last_name}
-                        onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+                        onChange={e =>
+                          setFormData({
+                            ...formData,
+                            last_name: e.target.value,
+                          })
+                        }
                         placeholder="Enter your last name"
                       />
                     </div>
@@ -175,9 +194,16 @@ export default function ProfilePage() {
 
                   <div>
                     <Label htmlFor="email">Email Address</Label>
-                    <Input id="email" type="email" value={user?.email || ""} disabled className="bg-muted" />
+                    <Input
+                      id="email"
+                      type="email"
+                      value={user?.email || ""}
+                      disabled
+                      className="bg-muted"
+                    />
                     <p className="text-xs text-muted-foreground mt-1">
-                      Email cannot be changed. Contact support if you need to update it.
+                      Email cannot be changed. Contact support if you need to
+                      update it.
                     </p>
                   </div>
 
@@ -187,7 +213,9 @@ export default function ProfilePage() {
                       id="phone"
                       type="tel"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={e =>
+                        setFormData({ ...formData, phone: e.target.value })
+                      }
                       placeholder="Enter your phone number"
                     />
                   </div>
@@ -198,14 +226,21 @@ export default function ProfilePage() {
                       id="date_of_birth"
                       type="date"
                       value={formData.date_of_birth}
-                      onChange={(e) => setFormData({ ...formData, date_of_birth: e.target.value })}
+                      onChange={e =>
+                        setFormData({
+                          ...formData,
+                          date_of_birth: e.target.value,
+                        })
+                      }
                     />
                   </div>
 
                   <div className="border-t pt-6">
                     <div className="flex items-center gap-2 mb-4">
                       <MapPin className="h-5 w-5 text-primary" />
-                      <h3 className="text-lg font-semibold">Address Information</h3>
+                      <h3 className="text-lg font-semibold">
+                        Address Information
+                      </h3>
                     </div>
                     <p className="text-sm text-muted-foreground mb-4">
                       Required for service bookings and delivery purposes
@@ -217,7 +252,12 @@ export default function ProfilePage() {
                         <Textarea
                           id="address"
                           value={formData.address}
-                          onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                          onChange={e =>
+                            setFormData({
+                              ...formData,
+                              address: e.target.value,
+                            })
+                          }
                           placeholder="Enter your full street address"
                           rows={2}
                           required
@@ -230,7 +270,9 @@ export default function ProfilePage() {
                           <Input
                             id="city"
                             value={formData.city}
-                            onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                            onChange={e =>
+                              setFormData({ ...formData, city: e.target.value })
+                            }
                             placeholder="Enter your city"
                             required
                           />
@@ -240,7 +282,12 @@ export default function ProfilePage() {
                           <Input
                             id="state"
                             value={formData.state}
-                            onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                            onChange={e =>
+                              setFormData({
+                                ...formData,
+                                state: e.target.value,
+                              })
+                            }
                             placeholder="Enter your state"
                             required
                           />
@@ -253,7 +300,12 @@ export default function ProfilePage() {
                           <Input
                             id="postal_code"
                             value={formData.postal_code}
-                            onChange={(e) => setFormData({ ...formData, postal_code: e.target.value })}
+                            onChange={e =>
+                              setFormData({
+                                ...formData,
+                                postal_code: e.target.value,
+                              })
+                            }
                             placeholder="Enter postal code"
                           />
                         </div>
@@ -261,7 +313,11 @@ export default function ProfilePage() {
                     </div>
                   </div>
 
-                  <Button type="submit" disabled={saving} className="w-full bg-primary hover:bg-primary/90">
+                  <Button
+                    type="submit"
+                    disabled={saving}
+                    className="w-full bg-primary hover:bg-primary/90"
+                  >
                     {saving ? "Saving..." : "Save Changes"}
                   </Button>
                 </form>
@@ -270,7 +326,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </main>
-
     </div>
-  )
+  );
 }

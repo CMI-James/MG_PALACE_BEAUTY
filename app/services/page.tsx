@@ -41,7 +41,7 @@ async function ServicesGrid({ category }: { category?: string }) {
 
   return (
     <>
-      {services.map((service) => (
+      {services.map(service => (
         <ServiceCard key={service.id} service={service} />
       ))}
     </>
@@ -53,9 +53,7 @@ export default async function ServicesPage({
 }: ServicesPageProps) {
   const params = await searchParams;
   const categories = await getCategories();
-  const selectedCategory = categories.find(
-    (cat) => cat.slug === params.category
-  );
+  const selectedCategory = categories.find(cat => cat.slug === params.category);
 
   return (
     <div className="min-h-screen">
@@ -90,7 +88,7 @@ export default async function ServicesPage({
                     All Services
                   </Badge>
                 </Link>
-                {categories.map((category) => (
+                {categories.map(category => (
                   <Link
                     key={category.id}
                     href={`/services?category=${category.slug}`}

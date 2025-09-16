@@ -1,30 +1,40 @@
-import { createServerClient, createServiceClient } from "@/lib/supabase/server"
-import { redirect } from "next/navigation"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Package, Users, Calendar, ShoppingCart } from "lucide-react"
+import { createServerClient, createServiceClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Package, Users, Calendar, ShoppingCart } from "lucide-react";
 
 export default async function AdminDashboard() {
-  const supabase = await createServerClient()
+  const supabase = await createServerClient();
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/auth/login?redirect=/admin")
+    redirect("/auth/login?redirect=/admin");
   }
 
   // Check if user is admin
-  const { data: profile } = await supabase.from("profiles").select("is_admin").eq("id", user.id).single()
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("is_admin")
+    .eq("id", user.id)
+    .single();
 
   if (!profile?.is_admin) {
-    redirect("/")
+    redirect("/");
   }
 
   // Use service client for admin data access (bypass RLS)
-  const service = createServiceClient()
-  
+  const service = createServiceClient();
+
   // Fetch dashboard stats
   const [
     { count: totalProducts },
@@ -38,21 +48,29 @@ export default async function AdminDashboard() {
     service.from("profiles").select("*", { count: "exact", head: true }),
     service.from("orders").select("*", { count: "exact", head: true }),
     service.from("appointments").select("*", { count: "exact", head: true }),
-    service.from("orders").select("*, profiles(first_name, last_name)").order("created_at", { ascending: false }).limit(5),
+    service
+      .from("orders")
+      .select("*, profiles(first_name, last_name)")
+      .order("created_at", { ascending: false })
+      .limit(5),
     service
       .from("appointments")
       .select("*, services(name), profiles(first_name, last_name)")
       .order("created_at", { ascending: false })
       .limit(5),
-  ])
+  ]);
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-6">
-            <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-            <p className="mt-2 text-gray-600">Manage your MG Beauty Palace store</p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Admin Dashboard
+            </h1>
+            <p className="mt-2 text-gray-600">
+              Manage your MG Beauty Palace store
+            </p>
           </div>
         </div>
       </div>
@@ -62,7 +80,9 @@ export default async function AdminDashboard() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Products</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Products
+              </CardTitle>
               <Package className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -82,7 +102,9 @@ export default async function AdminDashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Total Orders
+              </CardTitle>
               <ShoppingCart className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -92,7 +114,9 @@ export default async function AdminDashboard() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Appointments</CardTitle>
+              <CardTitle className="text-sm font-medium">
+                Appointments
+              </CardTitle>
               <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -110,19 +134,32 @@ export default async function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {recentOrders?.map((order) => (
-                  <div key={order.id} className="flex items-center justify-between">
+                {recentOrders?.map(order => (
+                  <div
+                    key={order.id}
+                    className="flex items-center justify-between"
+                  >
                     <div>
                       <p className="font-medium">
                         {order.profiles?.first_name && order.profiles?.last_name
                           ? `${order.profiles.first_name} ${order.profiles.last_name}`
                           : order.email || "Unknown"}
                       </p>
-                      <p className="text-sm text-gray-500">Order #{order.id.slice(0, 8)}</p>
+                      <p className="text-sm text-gray-500">
+                        Order #{order.id.slice(0, 8)}
+                      </p>
                     </div>
                     <div className="text-right">
-                      <p className="font-medium">₦{order.total_amount.toLocaleString()}</p>
-                      <Badge variant={order.status === "completed" ? "default" : "secondary"}>{order.status}</Badge>
+                      <p className="font-medium">
+                        ₦{order.total_amount.toLocaleString()}
+                      </p>
+                      <Badge
+                        variant={
+                          order.status === "completed" ? "default" : "secondary"
+                        }
+                      >
+                        {order.status}
+                      </Badge>
                     </div>
                   </div>
                 ))}
@@ -137,19 +174,35 @@ export default async function AdminDashboard() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {recentAppointments?.map((appointment) => (
-                  <div key={appointment.id} className="flex items-center justify-between">
+                {recentAppointments?.map(appointment => (
+                  <div
+                    key={appointment.id}
+                    className="flex items-center justify-between"
+                  >
                     <div>
                       <p className="font-medium">
-                        {appointment.profiles?.first_name && appointment.profiles?.last_name
+                        {appointment.profiles?.first_name &&
+                        appointment.profiles?.last_name
                           ? `${appointment.profiles.first_name} ${appointment.profiles.last_name}`
                           : appointment.customer_name || "Unknown"}
                       </p>
-                      <p className="text-sm text-gray-500">{appointment.services?.name}</p>
+                      <p className="text-sm text-gray-500">
+                        {appointment.services?.name}
+                      </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm">{new Date(appointment.appointment_date).toLocaleDateString()}</p>
-                      <Badge variant={appointment.status === "confirmed" ? "default" : "secondary"}>
+                      <p className="text-sm">
+                        {new Date(
+                          appointment.appointment_date
+                        ).toLocaleDateString()}
+                      </p>
+                      <Badge
+                        variant={
+                          appointment.status === "confirmed"
+                            ? "default"
+                            : "secondary"
+                        }
+                      >
                         {appointment.status}
                       </Badge>
                     </div>
@@ -161,5 +214,5 @@ export default async function AdminDashboard() {
         </div>
       </div>
     </div>
-  )
+  );
 }

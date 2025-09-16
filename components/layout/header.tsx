@@ -1,68 +1,71 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Search, Menu, User, Heart, Settings } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Search, Menu, User, Heart, Settings } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { CartSheet } from "@/components/cart/cart-sheet"
-import { createBrowserClient } from "@/lib/supabase/client"
+} from "@/components/ui/dropdown-menu";
+import { CartSheet } from "@/components/cart/cart-sheet";
+import { createBrowserClient } from "@/lib/supabase/client";
 
 const navigation = [
-
   { name: "Products", href: "/products" },
   { name: "Services", href: "/services" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
-]
+];
 
 export function Header() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const [user, setUser] = useState<any>(null)
-  const [userProfile, setUserProfile] = useState<any>(null)
-  const [isAdmin, setIsAdmin] = useState(false)
-  const supabase = createBrowserClient()
-  const router = useRouter()
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [user, setUser] = useState<any>(null);
+  const [userProfile, setUserProfile] = useState<any>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const supabase = createBrowserClient();
+  const router = useRouter();
 
   useEffect(() => {
     const getUser = async () => {
       const {
         data: { user },
-      } = await supabase.auth.getUser()
-      setUser(user)
+      } = await supabase.auth.getUser();
+      setUser(user);
 
       if (user) {
-        const { data: profile } = await supabase.from("profiles").select("first_name, is_admin").eq("id", user.id).single()
-        
-        console.log("User:", user)
-        console.log("Profile:", profile)
-        
-        setUserProfile(profile)
-        setIsAdmin(profile?.is_admin === true)
-      }
-    }
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("first_name, is_admin")
+          .eq("id", user.id)
+          .single();
 
-    getUser()
-  }, [])
+        console.log("User:", user);
+        console.log("Profile:", profile);
+
+        setUserProfile(profile);
+        setIsAdmin(profile?.is_admin === true);
+      }
+    };
+
+    getUser();
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
     }
-  }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -71,14 +74,18 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
             <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">MG</span>
+              <span className="text-primary-foreground font-bold text-sm">
+                MG
+              </span>
             </div>
-            <span className="font-serif text-xl font-bold text-primary">Beauty Palace</span>
+            <span className="font-serif text-xl font-bold text-primary">
+              Beauty Palace
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {navigation.map((item) => (
+            {navigation.map(item => (
               <Link
                 key={item.name}
                 href={item.href}
@@ -97,7 +104,7 @@ export function Header() {
                 type="search"
                 placeholder="Search products and services..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="pl-10 pr-4"
               />
             </form>
@@ -112,7 +119,9 @@ export function Header() {
               className="lg:hidden"
               onClick={() => {
                 if (searchQuery.trim()) {
-                  router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+                  router.push(
+                    `/search?q=${encodeURIComponent(searchQuery.trim())}`
+                  );
                 }
               }}
             >
@@ -134,8 +143,6 @@ export function Header() {
                 </Link>
               </Button>
             )}
-
-         
 
             {/* User Account */}
             <DropdownMenu>
@@ -175,7 +182,9 @@ export function Header() {
                           <Link href="/admin/orders">Manage Orders</Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                          <Link href="/admin/appointments">Manage Appointments</Link>
+                          <Link href="/admin/appointments">
+                            Manage Appointments
+                          </Link>
                         </DropdownMenuItem>
                       </>
                     )}
@@ -214,13 +223,13 @@ export function Header() {
                       placeholder="Search products and services..."
                       className="pl-10 pr-4"
                       value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onChange={e => setSearchQuery(e.target.value)}
                     />
                   </form>
 
                   {/* Mobile Navigation */}
                   <nav className="flex flex-col space-y-4">
-                    {navigation.map((item) => (
+                    {navigation.map(item => (
                       <Link
                         key={item.name}
                         href={item.href}
@@ -325,5 +334,5 @@ export function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }

@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { ProductCard } from "@/components/products/product-card"
-import { ProductListItem } from "@/components/products/product-list-item"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Grid, List } from "lucide-react"
-import type { Product } from "@/lib/supabase/queries"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { ProductCard } from "@/components/products/product-card";
+import { ProductListItem } from "@/components/products/product-list-item";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Grid, List } from "lucide-react";
+import type { Product } from "@/lib/supabase/queries";
 
 interface ProductsViewProps {
-  products: Product[]
-  isLoading?: boolean
+  products: Product[];
+  isLoading?: boolean;
 }
 
 function ProductSkeleton() {
@@ -21,7 +21,7 @@ function ProductSkeleton() {
       <Skeleton className="h-4 w-1/2" />
       <Skeleton className="h-10 w-full" />
     </div>
-  )
+  );
 }
 
 function ListSkeleton() {
@@ -38,11 +38,14 @@ function ListSkeleton() {
         </div>
       ))}
     </div>
-  )
+  );
 }
 
-export function ProductsView({ products, isLoading = false }: ProductsViewProps) {
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+export function ProductsView({
+  products,
+  isLoading = false,
+}: ProductsViewProps) {
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   if (isLoading) {
     return (
@@ -68,7 +71,7 @@ export function ProductsView({ products, isLoading = false }: ProductsViewProps)
           <ListSkeleton />
         )}
       </div>
-    )
+    );
   }
 
   if (products.length === 0) {
@@ -79,7 +82,7 @@ export function ProductsView({ products, isLoading = false }: ProductsViewProps)
           <a href="/products">View All Products</a>
         </Button>
       </div>
-    )
+    );
   }
 
   return (
@@ -108,17 +111,17 @@ export function ProductsView({ products, isLoading = false }: ProductsViewProps)
 
       {viewMode === "grid" ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {products.map((product) => (
+          {products.map(product => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>
       ) : (
         <div className="space-y-4">
-          {products.map((product) => (
+          {products.map(product => (
             <ProductListItem key={product.id} product={product} />
           ))}
         </div>
       )}
     </div>
-  )
+  );
 }

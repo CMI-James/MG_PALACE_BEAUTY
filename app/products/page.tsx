@@ -1,27 +1,35 @@
-import { Suspense } from "react"
-import { ProductsView } from "@/components/products/products-view"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { getProducts, getCategories } from "@/lib/supabase/queries"
-import Link from "next/link"
-import { Filter } from "lucide-react"
+import { Suspense } from "react";
+import { ProductsView } from "@/components/products/products-view";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { getProducts, getCategories } from "@/lib/supabase/queries";
+import Link from "next/link";
+import { Filter } from "lucide-react";
 
 interface ProductsPageProps {
   searchParams: Promise<{
-    category?: string
-    search?: string
-  }>
+    category?: string;
+    search?: string;
+  }>;
 }
 
-async function ProductsContent({ category, search }: { category?: string; search?: string }) {
-  const products = await getProducts({ category, search })
-  return <ProductsView products={products} />
+async function ProductsContent({
+  category,
+  search,
+}: {
+  category?: string;
+  search?: string;
+}) {
+  const products = await getProducts({ category, search });
+  return <ProductsView products={products} />;
 }
 
-export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const params = await searchParams
-  const categories = await getCategories()
-  const selectedCategory = categories.find((cat) => cat.slug === params.category)
+export default async function ProductsPage({
+  searchParams,
+}: ProductsPageProps) {
+  const params = await searchParams;
+  const categories = await getCategories();
+  const selectedCategory = categories.find(cat => cat.slug === params.category);
 
   return (
     <div className="min-h-screen">
@@ -56,10 +64,18 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     All Products
                   </Badge>
                 </Link>
-                {categories.map((category) => (
-                  <Link key={category.id} href={`/products?category=${category.slug}`} className="block mb-4">
+                {categories.map(category => (
+                  <Link
+                    key={category.id}
+                    href={`/products?category=${category.slug}`}
+                    className="block mb-4"
+                  >
                     <Badge
-                      variant={params.category === category.slug ? "default" : "outline"}
+                      variant={
+                        params.category === category.slug
+                          ? "default"
+                          : "outline"
+                      }
                       className="w-full justify-start cursor-pointer hover:bg-primary hover:text-primary-foreground text-sm py-2 px-3"
                     >
                       {category.name}
@@ -72,12 +88,17 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
           {/* Products View */}
           <div className="flex-1">
-            <Suspense fallback={<ProductsView products={[]} isLoading={true} />}>
-              <ProductsContent category={params.category} search={params.search} />
+            <Suspense
+              fallback={<ProductsView products={[]} isLoading={true} />}
+            >
+              <ProductsContent
+                category={params.category}
+                search={params.search}
+              />
             </Suspense>
           </div>
         </div>
       </main>
     </div>
-  )
+  );
 }

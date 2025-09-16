@@ -1,30 +1,47 @@
-import { redirect } from "next/navigation"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { getCurrentUser, getUserOrders, getUserAppointments } from "@/lib/supabase/auth"
-import { User, Package, Calendar, MapPin, Settings, LogOut } from "lucide-react"
-import Link from "next/link"
+import { redirect } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  getCurrentUser,
+  getUserOrders,
+  getUserAppointments,
+} from "@/lib/supabase/auth";
+import {
+  User,
+  Package,
+  Calendar,
+  MapPin,
+  Settings,
+  LogOut,
+} from "lucide-react";
+import Link from "next/link";
 
 export default async function AccountPage() {
-  const user = await getCurrentUser()
+  const user = await getCurrentUser();
 
   if (!user) {
-    redirect("/auth/login")
+    redirect("/auth/login");
   }
 
-  const orders = await getUserOrders(user.id)
-  const appointments = await getUserAppointments(user.id)
+  const orders = await getUserOrders(user.id);
+  const appointments = await getUserAppointments(user.id);
 
-  const recentOrders = orders.slice(0, 3)
-  const upcomingAppointments = appointments.filter((apt) => new Date(apt.appointment_date) >= new Date()).slice(0, 3)
+  const recentOrders = orders.slice(0, 3);
+  const upcomingAppointments = appointments
+    .filter(apt => new Date(apt.appointment_date) >= new Date())
+    .slice(0, 3);
 
   return (
     <div className="min-h-screen">
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="font-serif text-3xl md:text-4xl font-bold mb-4">My Account</h1>
-          <p className="text-muted-foreground">Welcome back, {user.profile?.first_name || user.email}!</p>
+          <h1 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+            My Account
+          </h1>
+          <p className="text-muted-foreground">
+            Welcome back, {user.profile?.first_name || user.email}!
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -35,7 +52,10 @@ export default async function AccountPage() {
                 <CardTitle className="text-lg">Account Menu</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <Link href="/account" className="flex items-center gap-2 p-2 rounded-lg bg-primary/10 text-primary">
+                <Link
+                  href="/account"
+                  className="flex items-center gap-2 p-2 rounded-lg bg-primary/10 text-primary"
+                >
                   <User className="h-4 w-4" />
                   Dashboard
                 </Link>
@@ -100,7 +120,9 @@ export default async function AccountPage() {
                 <CardContent className="p-6 text-center">
                   <User className="h-8 w-8 text-primary mx-auto mb-2" />
                   <p className="text-2xl font-bold">Active</p>
-                  <p className="text-sm text-muted-foreground">Account Status</p>
+                  <p className="text-sm text-muted-foreground">
+                    Account Status
+                  </p>
                 </CardContent>
               </Card>
             </div>
@@ -124,17 +146,32 @@ export default async function AccountPage() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {recentOrders.map((order) => (
-                      <div key={order.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    {recentOrders.map(order => (
+                      <div
+                        key={order.id}
+                        className="flex items-center justify-between p-4 border rounded-lg"
+                      >
                         <div>
-                          <p className="font-medium">Order #{order.order_number}</p>
+                          <p className="font-medium">
+                            Order #{order.order_number}
+                          </p>
                           <p className="text-sm text-muted-foreground">
                             {new Date(order.created_at).toLocaleDateString()}
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="font-medium">₦{order.total_amount.toLocaleString()}</p>
-                          <Badge variant={order.status === "delivered" ? "default" : "secondary"}>{order.status}</Badge>
+                          <p className="font-medium">
+                            ₦{order.total_amount.toLocaleString()}
+                          </p>
+                          <Badge
+                            variant={
+                              order.status === "delivered"
+                                ? "default"
+                                : "secondary"
+                            }
+                          >
+                            {order.status}
+                          </Badge>
                         </div>
                       </div>
                     ))}
@@ -155,25 +192,42 @@ export default async function AccountPage() {
                 {upcomingAppointments.length === 0 ? (
                   <div className="text-center py-8">
                     <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground">No upcoming appointments</p>
+                    <p className="text-muted-foreground">
+                      No upcoming appointments
+                    </p>
                     <Button asChild className="mt-4">
                       <Link href="/services">Book a Service</Link>
                     </Button>
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    {upcomingAppointments.map((appointment) => (
-                      <div key={appointment.id} className="flex items-center justify-between p-4 border rounded-lg">
+                    {upcomingAppointments.map(appointment => (
+                      <div
+                        key={appointment.id}
+                        className="flex items-center justify-between p-4 border rounded-lg"
+                      >
                         <div>
-                          <p className="font-medium">{appointment.service?.name}</p>
+                          <p className="font-medium">
+                            {appointment.service?.name}
+                          </p>
                           <p className="text-sm text-muted-foreground">
-                            {new Date(appointment.appointment_date).toLocaleDateString()} at{" "}
-                            {appointment.appointment_time}
+                            {new Date(
+                              appointment.appointment_date
+                            ).toLocaleDateString()}{" "}
+                            at {appointment.appointment_time}
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="font-medium">₦{appointment.total_amount.toLocaleString()}</p>
-                          <Badge variant={appointment.status === "confirmed" ? "default" : "secondary"}>
+                          <p className="font-medium">
+                            ₦{appointment.total_amount.toLocaleString()}
+                          </p>
+                          <Badge
+                            variant={
+                              appointment.status === "confirmed"
+                                ? "default"
+                                : "secondary"
+                            }
+                          >
                             {appointment.status}
                           </Badge>
                         </div>
@@ -187,5 +241,5 @@ export default async function AccountPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }

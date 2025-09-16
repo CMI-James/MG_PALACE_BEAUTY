@@ -1,14 +1,27 @@
-import { HeroSection } from "@/components/layout/hero-section"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import Link from "next/link"
-import { Star, Calendar, Sparkles, TrendingUp, Award, Users } from "lucide-react"
-import { AddToCartButton } from "@/components/products/add-to-cart-button"
-import { getProducts } from "@/lib/supabase/queries"
+import { HeroSection } from "@/components/layout/hero-section";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import {
+  Star,
+  Calendar,
+  Sparkles,
+  TrendingUp,
+  Award,
+  Users,
+} from "lucide-react";
+import { AddToCartButton } from "@/components/products/add-to-cart-button";
+import { getProducts } from "@/lib/supabase/queries";
 
 export default async function HomePage() {
-  const featuredProducts = await getProducts({ featured: true, limit: 4 })
+  const featuredProducts = await getProducts({ featured: true, limit: 4 });
 
   const categories = [
     {
@@ -31,7 +44,7 @@ export default async function HomePage() {
       image: "/images/beauty-accessories.jpg",
       href: "/products?category=beauty-accessories",
     },
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-background">
@@ -46,15 +59,22 @@ export default async function HomePage() {
                 <TrendingUp className="h-4 w-4" />
                 Popular Categories
               </div>
-              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4 text-balance">Shop by Category</h2>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4 text-balance">
+                Shop by Category
+              </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Explore our curated collection of professional beauty tools and products
+                Explore our curated collection of professional beauty tools and
+                products
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {categories.map((category, index) => (
-                <Link key={category.name} href={category.href} className="group">
+                <Link
+                  key={category.name}
+                  href={category.href}
+                  className="group"
+                >
                   <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:shadow-primary/10 border-l-4 border-l-transparent hover:border-l-primary">
                     <div className="aspect-[4/3] overflow-hidden relative">
                       <img
@@ -89,7 +109,8 @@ export default async function HomePage() {
                 Discover our most popular and highly-rated beauty tools
               </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                Professional-grade tools trusted by beauty experts across Nigeria
+                Professional-grade tools trusted by beauty experts across
+                Nigeria
               </p>
             </div>
 
@@ -129,24 +150,35 @@ export default async function HomePage() {
                           <Star
                             key={i}
                             className={`h-4 w-4 ${
-                              i < 4 ? "fill-secondary text-secondary" : "text-muted-foreground"
+                              i < 4
+                                ? "fill-secondary text-secondary"
+                                : "text-muted-foreground"
                             }`}
                           />
                         ))}
                       </div>
-                      <span className="text-sm text-muted-foreground">(24)</span>
+                      <span className="text-sm text-muted-foreground">
+                        (24)
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-lg text-primary">₦{product.price.toLocaleString()}</span>
-                      {product.compare_price && product.compare_price > product.price && (
-                        <span className="text-sm text-muted-foreground line-through">
-                          ₦{product.compare_price.toLocaleString()}
-                        </span>
-                      )}
+                      <span className="font-bold text-lg text-primary">
+                        ₦{product.price.toLocaleString()}
+                      </span>
+                      {product.compare_price &&
+                        product.compare_price > product.price && (
+                          <span className="text-sm text-muted-foreground line-through">
+                            ₦{product.compare_price.toLocaleString()}
+                          </span>
+                        )}
                     </div>
                   </CardContent>
                   <CardFooter className="p-4 pt-0">
-                    <AddToCartButton product={product} className="w-full bg-transparent " size="sm" />
+                    <AddToCartButton
+                      product={product}
+                      className="w-full bg-transparent "
+                      size="sm"
+                    />
                   </CardFooter>
                 </Card>
               ))}
@@ -187,16 +219,24 @@ export default async function HomePage() {
                   <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mb-4 shadow-lg">
                     <Sparkles className="h-8 w-8 text-primary-foreground" />
                   </div>
-                  <CardTitle className="text-primary">Microblading Services</CardTitle>
+                  <CardTitle className="text-primary">
+                    Microblading Services
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">
-                    Professional eyebrow enhancement with natural-looking results
+                    Professional eyebrow enhancement with natural-looking
+                    results
                   </p>
-                  <p className="font-bold text-lg text-secondary-foreground">From ₦80,000</p>
+                  <p className="font-bold text-lg text-secondary-foreground">
+                    From ₦80,000
+                  </p>
                 </CardContent>
                 <CardFooter>
-                  <Button asChild className="w-full bg-primary hover:bg-primary/90">
+                  <Button
+                    asChild
+                    className="w-full bg-primary hover:bg-primary/90"
+                  >
                     <Link href="/services/microblading">
                       <Calendar className="h-4 w-4 mr-2" />
                       Book Now
@@ -210,14 +250,21 @@ export default async function HomePage() {
                   <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mb-4 shadow-lg">
                     <Sparkles className="h-8 w-8 text-primary-foreground" />
                   </div>
-                  <CardTitle className="text-secondary-foreground">Lash Extensions</CardTitle>
+                  <CardTitle className="text-secondary-foreground">
+                    Lash Extensions
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground mb-4">Classic and volume lash extensions for stunning eyes</p>
+                  <p className="text-muted-foreground mb-4">
+                    Classic and volume lash extensions for stunning eyes
+                  </p>
                   <p className="font-bold text-lg ">From ₦35,000</p>
                 </CardContent>
                 <CardFooter>
-                  <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
+                  <Button
+                    asChild
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                  >
                     <Link href="/services/lash-extensions">
                       <Calendar className="h-4 w-4 mr-2" />
                       Book Now
@@ -231,11 +278,17 @@ export default async function HomePage() {
                   <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mb-4 shadow-lg">
                     <Sparkles className="h-8 w-8 text-primary-foreground" />
                   </div>
-                  <CardTitle className="text-primary">Training Courses</CardTitle>
+                  <CardTitle className="text-primary">
+                    Training Courses
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-muted-foreground mb-4">Professional certification courses for beauty artists</p>
-                  <p className="font-bold text-lg text-secondary-foreground">From ₦150,000</p>
+                  <p className="text-muted-foreground mb-4">
+                    Professional certification courses for beauty artists
+                  </p>
+                  <p className="font-bold text-lg text-secondary-foreground">
+                    From ₦150,000
+                  </p>
                 </CardContent>
                 <CardFooter>
                   <Button
@@ -254,5 +307,5 @@ export default async function HomePage() {
         </section>
       </main>
     </div>
-  )
+  );
 }

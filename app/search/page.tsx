@@ -1,47 +1,50 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import { useSearchParams } from "next/navigation"
-import { createBrowserClient } from "@/lib/supabase/client"
-import { ProductCard } from "@/components/products/product-card"
-import { ServiceCard } from "@/components/services/service-card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Search } from "lucide-react"
+import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { createBrowserClient } from "@/lib/supabase/client";
+import { ProductCard } from "@/components/products/product-card";
+import { ServiceCard } from "@/components/services/service-card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Search } from "lucide-react";
 
 export default function SearchPage() {
-  const searchParams = useSearchParams()
-  const query = searchParams.get("q") || ""
+  const searchParams = useSearchParams();
+  const query = searchParams.get("q") || "";
 
-  const [searchQuery, setSearchQuery] = useState(query)
-  const [products, setProducts] = useState<any[]>([])
-  const [services, setServices] = useState<any[]>([])
-  const [categories, setCategories] = useState<any[]>([])
-  const [selectedCategory, setSelectedCategory] = useState<string>("")
-  const [loading, setLoading] = useState(false)
+  const [searchQuery, setSearchQuery] = useState(query);
+  const [products, setProducts] = useState<any[]>([]);
+  const [services, setServices] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [loading, setLoading] = useState(false);
 
-  const supabase = createBrowserClient()
+  const supabase = createBrowserClient();
 
   useEffect(() => {
     if (query) {
-      performSearch(query)
+      performSearch(query);
     }
-    loadCategories()
-  }, [query])
+    loadCategories();
+  }, [query]);
 
   const loadCategories = async () => {
-    const { data } = await supabase.from("categories").select("*").order("name")
+    const { data } = await supabase
+      .from("categories")
+      .select("*")
+      .order("name");
 
-    setCategories(data || [])
-  }
+    setCategories(data || []);
+  };
 
   const performSearch = async (searchTerm: string) => {
-    if (!searchTerm.trim()) return
+    if (!searchTerm.trim()) return;
 
-    setLoading(true)
+    setLoading(true);
 
     try {
       // Search products
@@ -49,40 +52,42 @@ export default function SearchPage() {
         .from("products")
         .select("*, categories(name)")
         .or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`)
-        .eq("is_active", true)
+        .eq("is_active", true);
 
       if (selectedCategory) {
-        productQuery = productQuery.eq("category_id", selectedCategory)
+        productQuery = productQuery.eq("category_id", selectedCategory);
       }
 
-      const { data: productResults } = await productQuery
+      const { data: productResults } = await productQuery;
 
       // Search services
       const { data: serviceResults } = await supabase
         .from("services")
         .select("*")
         .or(`name.ilike.%${searchTerm}%,description.ilike.%${searchTerm}%`)
-        .eq("is_active", true)
+        .eq("is_active", true);
 
-      setProducts(productResults || [])
-      setServices(serviceResults || [])
+      setProducts(productResults || []);
+      setServices(serviceResults || []);
     } catch (error) {
-      console.error("Search error:", error)
+      console.error("Search error:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    performSearch(searchQuery)
-  }
+    e.preventDefault();
+    performSearch(searchQuery);
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">Search Results</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-6">
+            Search Results
+          </h1>
 
           <form onSubmit={handleSearch} className="flex gap-4 mb-6">
             <div className="flex-1 relative">
@@ -91,7 +96,7 @@ export default function SearchPage() {
                 type="search"
                 placeholder="Search products and services..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="pl-10"
               />
             </div>
@@ -106,20 +111,22 @@ export default function SearchPage() {
               variant={selectedCategory === "" ? "default" : "outline"}
               size="sm"
               onClick={() => {
-                setSelectedCategory("")
-                if (searchQuery) performSearch(searchQuery)
+                setSelectedCategory("");
+                if (searchQuery) performSearch(searchQuery);
               }}
             >
               All Categories
             </Button>
-            {categories.map((category) => (
+            {categories.map(category => (
               <Button
                 key={category.id}
-                variant={selectedCategory === category.id ? "default" : "outline"}
+                variant={
+                  selectedCategory === category.id ? "default" : "outline"
+                }
                 size="sm"
                 onClick={() => {
-                  setSelectedCategory(category.id)
-                  if (searchQuery) performSearch(searchQuery)
+                  setSelectedCategory(category.id);
+                  if (searchQuery) performSearch(searchQuery);
                 }}
               >
                 {category.name}
@@ -132,20 +139,26 @@ export default function SearchPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs defaultValue="products" className="w-full">
           <TabsList className="grid w-full grid-cols-2 mb-8">
-            <TabsTrigger value="products">Products ({products.length})</TabsTrigger>
-            <TabsTrigger value="services">Services ({services.length})</TabsTrigger>
+            <TabsTrigger value="products">
+              Products ({products.length})
+            </TabsTrigger>
+            <TabsTrigger value="services">
+              Services ({services.length})
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="products">
             {products.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {products.map((product) => (
+                {products.map(product => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             ) : (
               <div className="text-center py-12">
-                <p className="text-gray-500">No products found matching your search.</p>
+                <p className="text-gray-500">
+                  No products found matching your search.
+                </p>
               </div>
             )}
           </TabsContent>
@@ -153,18 +166,20 @@ export default function SearchPage() {
           <TabsContent value="services">
             {services.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {services.map((service) => (
+                {services.map(service => (
                   <ServiceCard key={service.id} service={service} />
                 ))}
               </div>
             ) : (
               <div className="text-center py-12">
-                <p className="text-gray-500">No services found matching your search.</p>
+                <p className="text-gray-500">
+                  No services found matching your search.
+                </p>
               </div>
             )}
           </TabsContent>
         </Tabs>
       </div>
     </div>
-  )
+  );
 }

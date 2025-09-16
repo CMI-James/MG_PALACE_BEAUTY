@@ -1,5 +1,5 @@
-import { Skeleton } from "@/components/ui/skeleton"
-import { Card, CardContent, CardHeader } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export default function Loading() {
   return (
@@ -70,7 +70,10 @@ export default function Loading() {
             {/* Product Features Skeleton */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="flex items-center gap-3 p-4 rounded-lg bg-muted/50">
+                <div
+                  key={i}
+                  className="flex items-center gap-3 p-4 rounded-lg bg-muted/50"
+                >
                   <Skeleton className="h-5 w-5" />
                   <div className="space-y-2">
                     <Skeleton className="h-4 w-20" />
@@ -124,5 +127,5 @@ export default function Loading() {
         </div>
       </main>
     </div>
-  )
+  );
 }

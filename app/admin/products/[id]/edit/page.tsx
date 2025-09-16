@@ -1,35 +1,43 @@
-import { createServerClient } from "@/lib/supabase/server"
-import { redirect, notFound } from "next/navigation"
-import { ProductForm } from "@/components/admin/product-form"
-import { ArrowLeft } from "lucide-react"
-import Link from "next/link"
+import { createServerClient } from "@/lib/supabase/server";
+import { redirect, notFound } from "next/navigation";
+import { ProductForm } from "@/components/admin/product-form";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
-export default async function EditProductPage({ params }: { params: { id: string } }) {
-  const supabase = await createServerClient()
+export default async function EditProductPage({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const supabase = await createServerClient();
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/auth/login?redirect=/admin/products")
+    redirect("/auth/login?redirect=/admin/products");
   }
 
   // Check if user is admin
-  const { data: profile } = await supabase.from("profiles").select("is_admin").eq("id", user.id).single()
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("is_admin")
+    .eq("id", user.id)
+    .single();
 
   if (!profile?.is_admin) {
-    redirect("/")
+    redirect("/");
   }
 
   // Get product and categories
   const [{ data: product }, { data: categories }] = await Promise.all([
     supabase.from("products").select("*").eq("id", params.id).single(),
     supabase.from("categories").select("*").order("name"),
-  ])
+  ]);
 
   if (!product) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -54,5 +62,5 @@ export default async function EditProductPage({ params }: { params: { id: string
         <ProductForm categories={categories || []} product={product} />
       </div>
     </div>
-  )
+  );
 }

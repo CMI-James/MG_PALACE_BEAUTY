@@ -1,22 +1,25 @@
-"use server"
+"use server";
 
-import { createServerClient } from "@/lib/supabase/server"
+import { createServerClient } from "@/lib/supabase/server";
 
-export async function checkTimeSlotAvailability(date: string, time: string): Promise<boolean> {
-  const supabase = createServerClient()
+export async function checkTimeSlotAvailability(
+  date: string,
+  time: string
+): Promise<boolean> {
+  const supabase = createServerClient();
 
   const { data: appointments } = await supabase
     .from("appointments")
     .select("id")
     .eq("appointment_date", date)
     .eq("appointment_time", time)
-    .in("status", ["confirmed", "pending"])
+    .in("status", ["confirmed", "pending"]);
 
-  return !appointments || appointments.length === 0
+  return !appointments || appointments.length === 0;
 }
 
 export async function getAvailableTimeSlots(date: string): Promise<string[]> {
-  const supabase = createServerClient()
+  const supabase = createServerClient();
 
   const allTimeSlots = [
     "09:00",
@@ -36,27 +39,28 @@ export async function getAvailableTimeSlots(date: string): Promise<string[]> {
     "16:00",
     "16:30",
     "17:00",
-  ]
+  ];
 
   const { data: bookedAppointments } = await supabase
     .from("appointments")
     .select("appointment_time")
     .eq("appointment_date", date)
-    .in("status", ["confirmed", "pending"])
+    .in("status", ["confirmed", "pending"]);
 
-  const bookedTimes = bookedAppointments?.map((apt) => apt.appointment_time) || []
+  const bookedTimes =
+    bookedAppointments?.map(apt => apt.appointment_time) || [];
 
-  return allTimeSlots.filter((time) => !bookedTimes.includes(time))
+  return allTimeSlots.filter(time => !bookedTimes.includes(time));
 }
 
 export async function getBookedTimeSlots(date: string): Promise<string[]> {
-  const supabase = createServerClient()
+  const supabase = createServerClient();
 
   const { data: appointments } = await supabase
     .from("appointments")
     .select("appointment_time")
     .eq("appointment_date", date)
-    .in("status", ["confirmed", "pending"])
+    .in("status", ["confirmed", "pending"]);
 
-  return appointments?.map((apt) => apt.appointment_time) || []
+  return appointments?.map(apt => apt.appointment_time) || [];
 }

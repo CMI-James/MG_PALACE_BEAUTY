@@ -1,9 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen">
-
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
@@ -16,16 +15,24 @@ export default function PrivacyPolicyPage() {
           <div className="space-y-6">
             <Card className="border-primary/10">
               <CardHeader>
-                <CardTitle className="text-primary">Information We Collect</CardTitle>
+                <CardTitle className="text-primary">
+                  Information We Collect
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground leading-relaxed">
-                  We collect information you provide directly to us, such as when you create an account, make a
-                  purchase, book an appointment, or contact us for support.
+                  We collect information you provide directly to us, such as
+                  when you create an account, make a purchase, book an
+                  appointment, or contact us for support.
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                  <li>Personal information (name, email, phone number, address)</li>
-                  <li>Payment information (processed securely through our payment partners)</li>
+                  <li>
+                    Personal information (name, email, phone number, address)
+                  </li>
+                  <li>
+                    Payment information (processed securely through our payment
+                    partners)
+                  </li>
                   <li>Appointment and service preferences</li>
                   <li>Communication preferences and marketing consent</li>
                 </ul>
@@ -34,11 +41,14 @@ export default function PrivacyPolicyPage() {
 
             <Card className="border-primary/10">
               <CardHeader>
-                <CardTitle className="text-primary">How We Use Your Information</CardTitle>
+                <CardTitle className="text-primary">
+                  How We Use Your Information
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground leading-relaxed">
-                  We use the information we collect to provide, maintain, and improve our services:
+                  We use the information we collect to provide, maintain, and
+                  improve our services:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                   <li>Process orders and appointments</li>
@@ -52,12 +62,15 @@ export default function PrivacyPolicyPage() {
 
             <Card className="border-primary/10">
               <CardHeader>
-                <CardTitle className="text-primary">Information Sharing</CardTitle>
+                <CardTitle className="text-primary">
+                  Information Sharing
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground leading-relaxed">
-                  We do not sell, trade, or otherwise transfer your personal information to third parties without your
-                  consent, except as described in this policy:
+                  We do not sell, trade, or otherwise transfer your personal
+                  information to third parties without your consent, except as
+                  described in this policy:
                 </p>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                   <li>Service providers who assist in our operations</li>
@@ -73,9 +86,10 @@ export default function PrivacyPolicyPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  We implement appropriate security measures to protect your personal information against unauthorized
-                  access, alteration, disclosure, or destruction. This includes SSL encryption for data transmission and
-                  secure storage practices.
+                  We implement appropriate security measures to protect your
+                  personal information against unauthorized access, alteration,
+                  disclosure, or destruction. This includes SSL encryption for
+                  data transmission and secure storage practices.
                 </p>
               </CardContent>
             </Card>
@@ -85,7 +99,9 @@ export default function PrivacyPolicyPage() {
                 <CardTitle className="text-primary">Your Rights</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-muted-foreground leading-relaxed">You have the right to:</p>
+                <p className="text-muted-foreground leading-relaxed">
+                  You have the right to:
+                </p>
                 <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                   <li>Access and update your personal information</li>
                   <li>Request deletion of your data</li>
@@ -101,7 +117,8 @@ export default function PrivacyPolicyPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  If you have any questions about this Privacy Policy, please contact us at:
+                  If you have any questions about this Privacy Policy, please
+                  contact us at:
                   <br />
                   Email: privacy@mgbeautypalace.com
                   <br />
@@ -112,7 +129,6 @@ export default function PrivacyPolicyPage() {
           </div>
         </div>
       </main>
-
     </div>
-  )
+  );
 }

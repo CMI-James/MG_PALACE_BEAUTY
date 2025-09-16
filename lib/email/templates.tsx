@@ -1,16 +1,18 @@
 interface AppointmentEmailData {
-  customerName: string
-  serviceName: string
-  appointmentDate: string
-  appointmentTime: string
-  duration: number
-  price: number
-  customerEmail: string
-  notes?: string
-  address?: string
+  customerName: string;
+  serviceName: string;
+  appointmentDate: string;
+  appointmentTime: string;
+  duration: number;
+  price: number;
+  customerEmail: string;
+  notes?: string;
+  address?: string;
 }
 
-export function generateAppointmentConfirmationEmail(data: AppointmentEmailData): string {
+export function generateAppointmentConfirmationEmail(
+  data: AppointmentEmailData
+): string {
   return `
 <!DOCTYPE html>
 <html>
@@ -61,7 +63,9 @@ export function generateAppointmentConfirmationEmail(data: AppointmentEmailData)
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Date:</span>
-                        <span class="detail-value">${new Date(data.appointmentDate).toLocaleDateString("en-US", {
+                        <span class="detail-value">${new Date(
+                          data.appointmentDate
+                        ).toLocaleDateString("en-US", {
                           weekday: "long",
                           year: "numeric",
                           month: "long",
@@ -119,10 +123,12 @@ export function generateAppointmentConfirmationEmail(data: AppointmentEmailData)
     </div>
 </body>
 </html>
-  `.trim()
+  `.trim();
 }
 
-export function generateAppointmentCancellationEmail(data: AppointmentEmailData): string {
+export function generateAppointmentCancellationEmail(
+  data: AppointmentEmailData
+): string {
   return `
 <!DOCTYPE html>
 <html>
@@ -161,7 +167,9 @@ export function generateAppointmentCancellationEmail(data: AppointmentEmailData)
             <div class="appointment-card">
                 <h3 style="margin-top: 0; color: #dc3545;">Cancelled Appointment Details</h3>
                 <p><strong>Service:</strong> ${data.serviceName}</p>
-                <p><strong>Date:</strong> ${new Date(data.appointmentDate).toLocaleDateString("en-US", {
+                <p><strong>Date:</strong> ${new Date(
+                  data.appointmentDate
+                ).toLocaleDateString("en-US", {
                   weekday: "long",
                   year: "numeric",
                   month: "long",
@@ -189,11 +197,11 @@ export function generateAppointmentCancellationEmail(data: AppointmentEmailData)
     </div>
 </body>
 </html>
-  `.trim()
+  `.trim();
 }
 
 export function generateAppointmentRescheduleEmail(
-  data: AppointmentEmailData & { oldDate: string; oldTime: string },
+  data: AppointmentEmailData & { oldDate: string; oldTime: string }
 ): string {
   return `
 <!DOCTYPE html>
@@ -238,7 +246,9 @@ export function generateAppointmentRescheduleEmail(
             <div class="appointment-card">
                 <h3 style="margin-top: 0; color: #4CAF50;">New Appointment Details</h3>
                 <p><strong>Service:</strong> ${data.serviceName}</p>
-                <p><strong>Date:</strong> ${new Date(data.appointmentDate).toLocaleDateString("en-US", {
+                <p><strong>Date:</strong> ${new Date(
+                  data.appointmentDate
+                ).toLocaleDateString("en-US", {
                   weekday: "long",
                   year: "numeric",
                   month: "long",
@@ -266,5 +276,5 @@ export function generateAppointmentRescheduleEmail(
     </div>
 </body>
 </html>
-  `.trim()
+  `.trim();
 }

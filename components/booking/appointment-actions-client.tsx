@@ -1,15 +1,29 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Calendar as CalendarCmp } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { Calendar as CalendarIcon, Clock } from "lucide-react"
-import { format } from "date-fns"
-import { toast } from "sonner"
-import { cancelUserAppointment, rescheduleUserAppointment } from "@/app/account/appointments/actions"
-import { cn } from "@/lib/utils"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Calendar as CalendarCmp } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar as CalendarIcon, Clock } from "lucide-react";
+import { format } from "date-fns";
+import { toast } from "sonner";
+import {
+  cancelUserAppointment,
+  rescheduleUserAppointment,
+} from "@/app/account/appointments/actions";
+import { cn } from "@/lib/utils";
 
 const timeSlots = [
   "09:00",
@@ -29,44 +43,52 @@ const timeSlots = [
   "16:00",
   "16:30",
   "17:00",
-]
+];
 
-export function AccountAppointmentActions({ appointmentId }: { appointmentId: string }) {
-  const [loading, setLoading] = useState<string | null>(null)
-  const [open, setOpen] = useState(false)
-  const [newDate, setNewDate] = useState<Date>()
-  const [newTime, setNewTime] = useState("")
+export function AccountAppointmentActions({
+  appointmentId,
+}: {
+  appointmentId: string;
+}) {
+  const [loading, setLoading] = useState<string | null>(null);
+  const [open, setOpen] = useState(false);
+  const [newDate, setNewDate] = useState<Date>();
+  const [newTime, setNewTime] = useState("");
 
   const onCancel = async () => {
-    setLoading("cancel")
+    setLoading("cancel");
     try {
-      await cancelUserAppointment(appointmentId)
-      toast.success("Appointment cancelled")
+      await cancelUserAppointment(appointmentId);
+      toast.success("Appointment cancelled");
     } catch (e) {
-      toast.error("Failed to cancel appointment")
+      toast.error("Failed to cancel appointment");
     } finally {
-      setLoading(null)
+      setLoading(null);
     }
-  }
+  };
 
   const onReschedule = async () => {
     if (!newDate || !newTime) {
-      toast.error("Select date and time")
-      return
+      toast.error("Select date and time");
+      return;
     }
-    setLoading("reschedule")
+    setLoading("reschedule");
     try {
-      await rescheduleUserAppointment(appointmentId, format(newDate, "yyyy-MM-dd"), newTime)
-      toast.success("Appointment rescheduled")
-      setOpen(false)
-      setNewDate(undefined)
-      setNewTime("")
+      await rescheduleUserAppointment(
+        appointmentId,
+        format(newDate, "yyyy-MM-dd"),
+        newTime
+      );
+      toast.success("Appointment rescheduled");
+      setOpen(false);
+      setNewDate(undefined);
+      setNewTime("");
     } catch (e) {
-      toast.error("Failed to reschedule appointment")
+      toast.error("Failed to reschedule appointment");
     } finally {
-      setLoading(null)
+      setLoading(null);
     }
-  }
+  };
 
   return (
     <div className="flex gap-2 pt-3">
@@ -87,7 +109,10 @@ export function AccountAppointmentActions({ appointmentId }: { appointmentId: st
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    className={cn("w-full justify-start text-left font-normal", !newDate && "text-muted-foreground")}
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !newDate && "text-muted-foreground"
+                    )}
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {newDate ? format(newDate, "PPP") : "Pick a date"}
@@ -98,7 +123,7 @@ export function AccountAppointmentActions({ appointmentId }: { appointmentId: st
                     mode="single"
                     selected={newDate}
                     onSelect={setNewDate}
-                    disabled={(date) => date < new Date() || date.getDay() === 0}
+                    disabled={date => date < new Date() || date.getDay() === 0}
                     initialFocus
                   />
                 </PopoverContent>
@@ -107,7 +132,7 @@ export function AccountAppointmentActions({ appointmentId }: { appointmentId: st
             <div className="space-y-2">
               <label className="text-sm font-medium">New Time</label>
               <div className="grid grid-cols-3 gap-2">
-                {timeSlots.map((time) => (
+                {timeSlots.map(time => (
                   <Button
                     key={time}
                     type="button"
@@ -133,11 +158,15 @@ export function AccountAppointmentActions({ appointmentId }: { appointmentId: st
           </DialogFooter>
         </DialogContent>
       </Dialog>
-      <Button size="sm" variant="outline" onClick={onCancel} disabled={loading === "cancel"} className="text-red-600 hover:text-red-700 bg-transparent">
+      <Button
+        size="sm"
+        variant="outline"
+        onClick={onCancel}
+        disabled={loading === "cancel"}
+        className="text-red-600 hover:text-red-700 bg-transparent"
+      >
         {loading === "cancel" ? "Cancelling..." : "Cancel"}
       </Button>
     </div>
-  )
+  );
 }
-
-

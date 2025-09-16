@@ -1,33 +1,42 @@
-import { createServerClient } from "@/lib/supabase/server"
-import { redirect, notFound } from "next/navigation"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { ArrowLeft } from "lucide-react"
-import Link from "next/link"
-import { ShippingStatusUpdater } from "@/components/admin/shipping-status-updater"
+import { createServerClient } from "@/lib/supabase/server";
+import { redirect, notFound } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { ShippingStatusUpdater } from "@/components/admin/shipping-status-updater";
 
-export default async function AdminOrderDetail({ params }: { params: { id: string } }) {
-  const supabase = createServerClient()
+export default async function AdminOrderDetail({
+  params,
+}: {
+  params: { id: string };
+}) {
+  const supabase = createServerClient();
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/auth/login?redirect=/admin/orders")
+    redirect("/auth/login?redirect=/admin/orders");
   }
 
   // Check if user is admin
-  const { data: profile } = await supabase.from("user_profiles").select("role").eq("id", user.id).single()
+  const { data: profile } = await supabase
+    .from("user_profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
 
   if (profile?.role !== "admin") {
-    redirect("/")
+    redirect("/");
   }
 
   // Get order details
   const { data: order, error } = await supabase
     .from("orders")
-    .select(`
+    .select(
+      `
       *,
       user_profiles(full_name, email, phone),
       order_items(
@@ -42,12 +51,13 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
         location,
         created_at
       )
-    `)
+    `
+    )
     .eq("id", params.id)
-    .single()
+    .single();
 
   if (error || !order) {
-    notFound()
+    notFound();
   }
 
   return (
@@ -62,8 +72,12 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
               <ArrowLeft className="h-4 w-4 mr-1" />
               Back to Orders
             </Link>
-            <h1 className="text-3xl font-bold text-gray-900">Order #{order.id.slice(0, 8)}</h1>
-            <p className="mt-2 text-gray-600">Order details and shipping management</p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Order #{order.id.slice(0, 8)}
+            </h1>
+            <p className="mt-2 text-gray-600">
+              Order details and shipping management
+            </p>
           </div>
         </div>
       </div>
@@ -86,7 +100,8 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
                     <strong>Email:</strong> {order.user_profiles?.email}
                   </p>
                   <p>
-                    <strong>Phone:</strong> {order.user_profiles?.phone || "Not provided"}
+                    <strong>Phone:</strong>{" "}
+                    {order.user_profiles?.phone || "Not provided"}
                   </p>
                 </div>
               </CardContent>
@@ -100,7 +115,10 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
               <CardContent>
                 <div className="space-y-4">
                   {order.order_items?.map((item, index) => (
-                    <div key={index} className="flex items-center space-x-4 p-4 border rounded-lg">
+                    <div
+                      key={index}
+                      className="flex items-center space-x-4 p-4 border rounded-lg"
+                    >
                       <div className="relative h-16 w-16 rounded-md overflow-hidden">
                         <img
                           src={item.products?.image_url || "/placeholder.svg"}
@@ -110,9 +128,13 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
                       </div>
                       <div className="flex-1">
                         <p className="font-medium">{item.products?.name}</p>
-                        <p className="text-sm text-muted-foreground">Quantity: {item.quantity}</p>
+                        <p className="text-sm text-muted-foreground">
+                          Quantity: {item.quantity}
+                        </p>
                       </div>
-                      <p className="font-medium">₦{(item.price * item.quantity).toLocaleString()}</p>
+                      <p className="font-medium">
+                        ₦{(item.price * item.quantity).toLocaleString()}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -127,21 +149,32 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
               <CardContent>
                 {order.shipping_updates && order.shipping_updates.length > 0 ? (
                   <div className="space-y-4">
-                    {order.shipping_updates.map((update) => (
-                      <div key={update.id} className="border-l-2 border-primary pl-4">
+                    {order.shipping_updates.map(update => (
+                      <div
+                        key={update.id}
+                        className="border-l-2 border-primary pl-4"
+                      >
                         <div className="flex items-center justify-between">
                           <Badge className="capitalize">{update.status}</Badge>
                           <span className="text-sm text-muted-foreground">
                             {new Date(update.created_at).toLocaleString()}
                           </span>
                         </div>
-                        {update.message && <p className="text-sm mt-1">{update.message}</p>}
-                        {update.location && <p className="text-sm text-muted-foreground">📍 {update.location}</p>}
+                        {update.message && (
+                          <p className="text-sm mt-1">{update.message}</p>
+                        )}
+                        {update.location && (
+                          <p className="text-sm text-muted-foreground">
+                            📍 {update.location}
+                          </p>
+                        )}
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-muted-foreground">No shipping updates yet</p>
+                  <p className="text-muted-foreground">
+                    No shipping updates yet
+                  </p>
                 )}
               </CardContent>
             </Card>
@@ -157,15 +190,25 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
                   <span>Status:</span>
-                  <Badge variant={order.status === "completed" ? "default" : "secondary"}>{order.status}</Badge>
+                  <Badge
+                    variant={
+                      order.status === "completed" ? "default" : "secondary"
+                    }
+                  >
+                    {order.status}
+                  </Badge>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping Status:</span>
-                  <Badge className="capitalize">{order.shipping_status || "pending"}</Badge>
+                  <Badge className="capitalize">
+                    {order.shipping_status || "pending"}
+                  </Badge>
                 </div>
                 <div className="flex justify-between">
                   <span>Tracking Number:</span>
-                  <span className="font-mono text-sm">{order.tracking_number || "Not assigned"}</span>
+                  <span className="font-mono text-sm">
+                    {order.tracking_number || "Not assigned"}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span>Order Date:</span>
@@ -188,5 +231,5 @@ export default async function AdminOrderDetail({ params }: { params: { id: strin
         </div>
       </div>
     </div>
-  )
+  );
 }

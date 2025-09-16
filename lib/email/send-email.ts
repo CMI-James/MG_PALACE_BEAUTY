@@ -1,11 +1,11 @@
-"use server"
+"use server";
 
-import { createServerClient } from "@/lib/supabase/server"
+import { createServerClient } from "@/lib/supabase/server";
 
 interface EmailData {
-  to: string
-  subject: string
-  html: string
+  to: string;
+  subject: string;
+  html: string;
 }
 
 export async function sendEmail({ to, subject, html }: EmailData) {
@@ -16,38 +16,40 @@ export async function sendEmail({ to, subject, html }: EmailData) {
   // - Mailgun
 
   // For now, we'll simulate sending an email and log it
-  console.log("📧 Email would be sent:")
-  console.log("To:", to)
-  console.log("Subject:", subject)
-  console.log("HTML length:", html.length)
+  console.log("📧 Email would be sent:");
+  console.log("To:", to);
+  console.log("Subject:", subject);
+  console.log("HTML length:", html.length);
 
   // Simulate email sending delay
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise(resolve => setTimeout(resolve, 500));
 
   // In production, you would return the actual email service response
-  return { success: true, messageId: `sim_${Date.now()}` }
+  return { success: true, messageId: `sim_${Date.now()}` };
 }
 
 export async function sendAppointmentEmail(
   appointmentId: string,
   type: "confirmation" | "cancellation" | "reschedule",
-  oldData?: { date: string; time: string },
+  oldData?: { date: string; time: string }
 ) {
-  const supabase = createServerClient()
+  const supabase = createServerClient();
 
   // Get appointment details with user and service info
   const { data: appointment } = await supabase
     .from("appointments")
-    .select(`
+    .select(
+      `
       *,
       user_profiles(full_name, email, address),
       services(name, duration, price)
-    `)
+    `
+    )
     .eq("id", appointmentId)
-    .single()
+    .single();
 
   if (!appointment || !appointment.user_profiles?.email) {
-    throw new Error("Appointment or user email not found")
+    throw new Error("Appointment or user email not found");
   }
 
   const emailData = {
@@ -60,41 +62,47 @@ export async function sendAppointmentEmail(
     customerEmail: appointment.user_profiles.email,
     notes: appointment.notes,
     address: appointment.user_profiles.address,
-  }
+  };
 
-  let subject: string
-  let html: string
+  let subject: string;
+  let html: string;
 
   switch (type) {
     case "confirmation":
-      subject = `Appointment Confirmed - ${emailData.serviceName} at MG Beauty Palace`
-      const { generateAppointmentConfirmationEmail } = await import("./templates")
-      html = generateAppointmentConfirmationEmail(emailData)
-      break
+      subject = `Appointment Confirmed - ${emailData.serviceName} at MG Beauty Palace`;
+      const { generateAppointmentConfirmationEmail } = await import(
+        "./templates"
+      );
+      html = generateAppointmentConfirmationEmail(emailData);
+      break;
 
     case "cancellation":
-      subject = `Appointment Cancelled - ${emailData.serviceName} at MG Beauty Palace`
-      const { generateAppointmentCancellationEmail } = await import("./templates")
-      html = generateAppointmentCancellationEmail(emailData)
-      break
+      subject = `Appointment Cancelled - ${emailData.serviceName} at MG Beauty Palace`;
+      const { generateAppointmentCancellationEmail } = await import(
+        "./templates"
+      );
+      html = generateAppointmentCancellationEmail(emailData);
+      break;
 
     case "reschedule":
-      subject = `Appointment Rescheduled - ${emailData.serviceName} at MG Beauty Palace`
-      const { generateAppointmentRescheduleEmail } = await import("./templates")
+      subject = `Appointment Rescheduled - ${emailData.serviceName} at MG Beauty Palace`;
+      const { generateAppointmentRescheduleEmail } = await import(
+        "./templates"
+      );
       html = generateAppointmentRescheduleEmail({
         ...emailData,
         oldDate: oldData?.date || "",
         oldTime: oldData?.time || "",
-      })
-      break
+      });
+      break;
 
     default:
-      throw new Error("Invalid email type")
+      throw new Error("Invalid email type");
   }
 
   return await sendEmail({
     to: emailData.customerEmail,
     subject,
     html,
-  })
+  });
 }

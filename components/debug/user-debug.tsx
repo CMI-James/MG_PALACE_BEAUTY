@@ -1,42 +1,48 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { createClient } from "@/lib/supabase/client"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function UserDebug() {
-  const [debugInfo, setDebugInfo] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
+  const [debugInfo, setDebugInfo] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
   const checkUserStatus = async () => {
-    setLoading(true)
-    const supabase = createClient()
+    setLoading(true);
+    const supabase = createClient();
 
     try {
       // Check current user
       const {
         data: { user },
         error: userError,
-      } = await supabase.auth.getUser()
-      console.log("[v0] Current user:", user)
-      console.log("[v0] User error:", userError)
+      } = await supabase.auth.getUser();
+      console.log("[v0] Current user:", user);
+      console.log("[v0] User error:", userError);
 
       // Check if profile exists
-      let profile = null
-      let profileError = null
+      let profile = null;
+      let profileError = null;
       if (user) {
-        const { data, error } = await supabase.from("profiles").select("*").eq("id", user.id).single()
-        profile = data
-        profileError = error
-        console.log("[v0] Profile data:", profile)
-        console.log("[v0] Profile error:", profileError)
+        const { data, error } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+        profile = data;
+        profileError = error;
+        console.log("[v0] Profile data:", profile);
+        console.log("[v0] Profile error:", profileError);
       }
 
       // Check all profiles (for debugging)
-      const { data: allProfiles, error: allProfilesError } = await supabase.from("profiles").select("*")
-      console.log("[v0] All profiles:", allProfiles)
-      console.log("[v0] All profiles error:", allProfilesError)
+      const { data: allProfiles, error: allProfilesError } = await supabase
+        .from("profiles")
+        .select("*");
+      console.log("[v0] All profiles:", allProfiles);
+      console.log("[v0] All profiles error:", allProfilesError);
 
       setDebugInfo({
         user,
@@ -45,14 +51,14 @@ export function UserDebug() {
         profileError,
         allProfiles,
         allProfilesError,
-      })
+      });
     } catch (error) {
-      console.error("[v0] Debug error:", error)
-      setDebugInfo({ error: error.message })
+      console.error("[v0] Debug error:", error);
+      setDebugInfo({ error: error.message });
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <Card className="w-full max-w-2xl">
@@ -95,5 +101,5 @@ export function UserDebug() {
         )}
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -1,39 +1,47 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { toast } from "sonner"
+import { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { toast } from "sonner";
 
 interface Product {
-  id: string
-  name: string
-  quantity: number
+  id: string;
+  name: string;
+  quantity: number;
 }
 
 interface InventoryAdjustmentFormProps {
-  products: Product[]
+  products: Product[];
 }
 
-export function InventoryAdjustmentForm({ products }: InventoryAdjustmentFormProps) {
-  const [selectedProduct, setSelectedProduct] = useState("")
-  const [newQuantity, setNewQuantity] = useState("")
-  const [reason, setReason] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
+export function InventoryAdjustmentForm({
+  products,
+}: InventoryAdjustmentFormProps) {
+  const [selectedProduct, setSelectedProduct] = useState("");
+  const [newQuantity, setNewQuantity] = useState("");
+  const [reason, setReason] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const selectedProductData = products.find((p) => p.id === selectedProduct)
+  const selectedProductData = products.find(p => p.id === selectedProduct);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!selectedProduct || !newQuantity) return
+    e.preventDefault();
+    if (!selectedProduct || !newQuantity) return;
 
-    setIsSubmitting(true)
+    setIsSubmitting(true);
 
     try {
       const response = await fetch("/api/admin/adjust-inventory", {
@@ -46,25 +54,25 @@ export function InventoryAdjustmentForm({ products }: InventoryAdjustmentFormPro
           newQuantity: Number.parseInt(newQuantity),
           reason: reason || "Manual adjustment",
         }),
-      })
+      });
 
       if (response.ok) {
-        toast.success("Inventory adjusted successfully")
-        setSelectedProduct("")
-        setNewQuantity("")
-        setReason("")
+        toast.success("Inventory adjusted successfully");
+        setSelectedProduct("");
+        setNewQuantity("");
+        setReason("");
         // Refresh the page to show updated data
-        window.location.reload()
+        window.location.reload();
       } else {
-        const error = await response.json()
-        toast.error(error.error || "Failed to adjust inventory")
+        const error = await response.json();
+        toast.error(error.error || "Failed to adjust inventory");
       }
     } catch (error) {
-      toast.error("Failed to adjust inventory")
+      toast.error("Failed to adjust inventory");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   return (
     <Card>
@@ -80,7 +88,7 @@ export function InventoryAdjustmentForm({ products }: InventoryAdjustmentFormPro
                 <SelectValue placeholder="Select a product" />
               </SelectTrigger>
               <SelectContent>
-                {products.map((product) => (
+                {products.map(product => (
                   <SelectItem key={product.id} value={product.id}>
                     {product.name} (Current: {product.quantity})
                   </SelectItem>
@@ -104,7 +112,7 @@ export function InventoryAdjustmentForm({ products }: InventoryAdjustmentFormPro
               type="number"
               min="0"
               value={newQuantity}
-              onChange={(e) => setNewQuantity(e.target.value)}
+              onChange={e => setNewQuantity(e.target.value)}
               placeholder="Enter new quantity"
               required
             />
@@ -115,17 +123,21 @@ export function InventoryAdjustmentForm({ products }: InventoryAdjustmentFormPro
             <Textarea
               id="reason"
               value={reason}
-              onChange={(e) => setReason(e.target.value)}
+              onChange={e => setReason(e.target.value)}
               placeholder="Reason for adjustment"
               rows={2}
             />
           </div>
 
-          <Button type="submit" disabled={isSubmitting || !selectedProduct || !newQuantity} className="w-full">
+          <Button
+            type="submit"
+            disabled={isSubmitting || !selectedProduct || !newQuantity}
+            className="w-full"
+          >
             {isSubmitting ? "Adjusting..." : "Adjust Inventory"}
           </Button>
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }

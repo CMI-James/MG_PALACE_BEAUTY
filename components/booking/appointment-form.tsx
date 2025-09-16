@@ -1,31 +1,41 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState, useEffect } from "react"
-import { createBrowserClient } from "@/lib/supabase/client"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Calendar } from "@/components/ui/calendar"
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { CalendarIcon, Clock, MapPin, AlertCircle, X } from "lucide-react"
-import { Alert, AlertDescription } from "@/components/ui/alert"
-import { Badge } from "@/components/ui/badge"
-import { format } from "date-fns"
-import { cn } from "@/lib/utils"
-import { toast } from "sonner"
-import Link from "next/link"
+import { useState, useEffect } from "react";
+import { createBrowserClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarIcon, Clock, MapPin, AlertCircle, X } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+import { cn } from "@/lib/utils";
+import { toast } from "sonner";
+import Link from "next/link";
 
 interface AppointmentFormProps {
   service: {
-    id: string
-    name: string
-    duration: number
-    price: number
-  }
+    id: string;
+    name: string;
+    duration: number;
+    price: number;
+  };
 }
 
 const timeSlots = [
@@ -46,129 +56,141 @@ const timeSlots = [
   "16:00",
   "16:30",
   "17:00",
-]
+];
 
 export function AppointmentForm({ service }: AppointmentFormProps) {
-  const [date, setDate] = useState<Date>()
-  const [selectedTime, setSelectedTime] = useState("")
-  const [notes, setNotes] = useState("")
-  const [loading, setLoading] = useState(false)
-  const [userProfile, setUserProfile] = useState<any>(null)
+  const [date, setDate] = useState<Date>();
+  const [selectedTime, setSelectedTime] = useState("");
+  const [notes, setNotes] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [userProfile, setUserProfile] = useState<any>(null);
   const [addressData, setAddressData] = useState({
     address: "",
     city: "",
     state: "",
     postal_code: "",
-  })
-  const [showAddressForm, setShowAddressForm] = useState(false)
-  const [bookedSlots, setBookedSlots] = useState<string[]>([])
-  const [checkingAvailability, setCheckingAvailability] = useState(false)
+  });
+  const [showAddressForm, setShowAddressForm] = useState(false);
+  const [bookedSlots, setBookedSlots] = useState<string[]>([]);
+  const [checkingAvailability, setCheckingAvailability] = useState(false);
 
-  const supabase = createBrowserClient()
+  const supabase = createBrowserClient();
 
   useEffect(() => {
     async function checkUserProfile() {
       const {
         data: { user },
-      } = await supabase.auth.getUser()
+      } = await supabase.auth.getUser();
 
       if (user) {
-        const { data: profile } = await supabase.from("profiles").select("*").eq("id", user.id).single()
-        setUserProfile(profile)
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("id", user.id)
+          .single();
+        setUserProfile(profile);
 
         const { data: addresses } = await supabase
           .from("addresses")
           .select("*")
           .eq("user_id", user.id)
           .eq("is_default", true)
-          .single()
+          .single();
 
         if (!addresses) {
-          setShowAddressForm(true)
+          setShowAddressForm(true);
         }
       }
     }
 
-    checkUserProfile()
-  }, [supabase])
+    checkUserProfile();
+  }, [supabase]);
 
   useEffect(() => {
     async function checkAvailability() {
       if (!date) {
-        setBookedSlots([])
-        return
+        setBookedSlots([]);
+        return;
       }
 
-      setCheckingAvailability(true)
+      setCheckingAvailability(true);
       try {
         const { data: appointments } = await supabase
           .from("appointments")
           .select("appointment_time")
           .eq("appointment_date", format(date, "yyyy-MM-dd"))
-          .in("status", ["confirmed", "pending"]) // Include both confirmed and pending appointments
+          .in("status", ["confirmed", "pending"]); // Include both confirmed and pending appointments
 
-        const bookedTimes = appointments?.map((apt) => apt.appointment_time) || []
-        setBookedSlots(bookedTimes)
+        const bookedTimes =
+          appointments?.map(apt => apt.appointment_time) || [];
+        setBookedSlots(bookedTimes);
       } catch (error) {
-        console.error("Error checking availability:", error)
+        console.error("Error checking availability:", error);
       } finally {
-        setCheckingAvailability(false)
+        setCheckingAvailability(false);
       }
     }
 
-    checkAvailability()
-  }, [date, supabase])
+    checkAvailability();
+  }, [date, supabase]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!date || !selectedTime) {
-      toast.error("Please select a date and time")
-      return
+      toast.error("Please select a date and time");
+      return;
     }
 
     if (bookedSlots.includes(selectedTime)) {
-      toast.error("This time slot is no longer available. Please select another time.")
-      return
+      toast.error(
+        "This time slot is no longer available. Please select another time."
+      );
+      return;
     }
 
-    setLoading(true)
+    setLoading(true);
 
     try {
       const {
         data: { user },
-      } = await supabase.auth.getUser()
+      } = await supabase.auth.getUser();
 
       if (!user) {
-        toast.error("Please sign in to book an appointment")
-        return
+        toast.error("Please sign in to book an appointment");
+        return;
       }
 
-      if (showAddressForm && (!addressData.address || !addressData.city || !addressData.state)) {
-        toast.error("Please provide your complete address information")
-        setLoading(false)
-        return
+      if (
+        showAddressForm &&
+        (!addressData.address || !addressData.city || !addressData.state)
+      ) {
+        toast.error("Please provide your complete address information");
+        setLoading(false);
+        return;
       }
 
       if (showAddressForm) {
-        const { error: addressError } = await supabase.from("addresses").upsert({
-          user_id: user.id,
-          type: "shipping",
-          first_name: userProfile?.first_name || "",
-          last_name: userProfile?.last_name || "",
-          address_line_1: addressData.address,
-          city: addressData.city,
-          state: addressData.state,
-          postal_code: addressData.postal_code || "",
-          country: "Nigeria",
-          is_default: true,
-        })
+        const { error: addressError } = await supabase
+          .from("addresses")
+          .upsert({
+            user_id: user.id,
+            type: "shipping",
+            first_name: userProfile?.first_name || "",
+            last_name: userProfile?.last_name || "",
+            address_line_1: addressData.address,
+            city: addressData.city,
+            state: addressData.state,
+            postal_code: addressData.postal_code || "",
+            country: "Nigeria",
+            is_default: true,
+          });
 
         if (addressError) {
-          console.error("Address creation error:", addressError)
-          toast.error("Failed to save address information")
-          setLoading(false)
-          return
+          console.error("Address creation error:", addressError);
+          toast.error("Failed to save address information");
+          setLoading(false);
+          return;
         }
       }
 
@@ -177,22 +199,25 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
         .select("id")
         .eq("appointment_date", format(date, "yyyy-MM-dd"))
         .eq("appointment_time", selectedTime)
-        .in("status", ["confirmed", "pending"])
+        .in("status", ["confirmed", "pending"]);
 
       if (conflictCheck && conflictCheck.length > 0) {
-        toast.error("This time slot was just booked by someone else. Please select another time.")
-        setLoading(false)
+        toast.error(
+          "This time slot was just booked by someone else. Please select another time."
+        );
+        setLoading(false);
         // Refresh availability
         const { data: appointments } = await supabase
           .from("appointments")
           .select("appointment_time")
           .eq("appointment_date", format(date, "yyyy-MM-dd"))
-          .in("status", ["confirmed", "pending"])
+          .in("status", ["confirmed", "pending"]);
 
-        const bookedTimes = appointments?.map((apt) => apt.appointment_time) || []
-        setBookedSlots(bookedTimes)
-        setSelectedTime("")
-        return
+        const bookedTimes =
+          appointments?.map(apt => apt.appointment_time) || [];
+        setBookedSlots(bookedTimes);
+        setSelectedTime("");
+        return;
       }
 
       const { error } = await supabase.from("appointments").insert({
@@ -203,34 +228,36 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
         duration: service.duration,
         notes: notes.trim() || null,
         status: "pending",
-        customer_name: `${userProfile?.first_name || ""} ${userProfile?.last_name || ""}`.trim() || "Customer",
+        customer_name:
+          `${userProfile?.first_name || ""} ${userProfile?.last_name || ""}`.trim() ||
+          "Customer",
         customer_email: user.email || "",
         customer_phone: userProfile?.phone || "",
         total_amount: service.price,
         payment_status: "pending",
-      })
+      });
 
-      if (error) throw error
+      if (error) throw error;
 
-      toast.success("Appointment booked successfully!")
+      toast.success("Appointment booked successfully!");
 
       // Reset form
-      setDate(undefined)
-      setSelectedTime("")
-      setNotes("")
-      setAddressData({ address: "", city: "", state: "", postal_code: "" })
-      setBookedSlots([])
+      setDate(undefined);
+      setSelectedTime("");
+      setNotes("");
+      setAddressData({ address: "", city: "", state: "", postal_code: "" });
+      setBookedSlots([]);
     } catch (error) {
-      console.error("Booking error:", error)
-      toast.error("Failed to book appointment. Please try again.")
+      console.error("Booking error:", error);
+      toast.error("Failed to book appointment. Please try again.");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const isTimeSlotAvailable = (time: string) => {
-    return !bookedSlots.includes(time)
-  }
+    return !bookedSlots.includes(time);
+  };
 
   return (
     <Card>
@@ -246,8 +273,12 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
             <Alert className="border-secondary/50 bg-secondary/10">
               <AlertCircle className="h-4 w-4 text-secondary-foreground" />
               <AlertDescription>
-                <strong>Address Required:</strong> Please provide your address information for service booking.{" "}
-                <Link href="/account/profile" className="text-primary hover:underline">
+                <strong>Address Required:</strong> Please provide your address
+                information for service booking.{" "}
+                <Link
+                  href="/account/profile"
+                  className="text-primary hover:underline"
+                >
                   Update in profile
                 </Link>{" "}
                 or fill below.
@@ -262,7 +293,9 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
                   <MapPin className="h-5 w-5 text-primary" />
                   Address Information
                 </CardTitle>
-                <CardDescription>Required for service location and contact purposes</CardDescription>
+                <CardDescription>
+                  Required for service location and contact purposes
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -270,7 +303,12 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
                   <Textarea
                     id="booking-address"
                     value={addressData.address}
-                    onChange={(e) => setAddressData({ ...addressData, address: e.target.value })}
+                    onChange={e =>
+                      setAddressData({
+                        ...addressData,
+                        address: e.target.value,
+                      })
+                    }
                     placeholder="Enter your full street address"
                     rows={2}
                     required
@@ -283,7 +321,9 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
                     <Input
                       id="booking-city"
                       value={addressData.city}
-                      onChange={(e) => setAddressData({ ...addressData, city: e.target.value })}
+                      onChange={e =>
+                        setAddressData({ ...addressData, city: e.target.value })
+                      }
                       placeholder="Enter your city"
                       required
                     />
@@ -293,7 +333,12 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
                     <Input
                       id="booking-state"
                       value={addressData.state}
-                      onChange={(e) => setAddressData({ ...addressData, state: e.target.value })}
+                      onChange={e =>
+                        setAddressData({
+                          ...addressData,
+                          state: e.target.value,
+                        })
+                      }
                       placeholder="Enter your state"
                       required
                     />
@@ -306,7 +351,12 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
                     <Input
                       id="booking-postal"
                       value={addressData.postal_code}
-                      onChange={(e) => setAddressData({ ...addressData, postal_code: e.target.value })}
+                      onChange={e =>
+                        setAddressData({
+                          ...addressData,
+                          postal_code: e.target.value,
+                        })
+                      }
                       placeholder="Enter postal code"
                     />
                   </div>
@@ -322,7 +372,10 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
-                  className={cn("w-full justify-start text-left font-normal", !date && "text-muted-foreground")}
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !date && "text-muted-foreground"
+                  )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {date ? format(date, "PPP") : "Pick a date"}
@@ -333,7 +386,7 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
                   mode="single"
                   selected={date}
                   onSelect={setDate}
-                  disabled={(date) => date < new Date() || date.getDay() === 0}
+                  disabled={date => date < new Date() || date.getDay() === 0}
                   initialFocus
                 />
               </PopoverContent>
@@ -356,9 +409,9 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
               )}
             </div>
             <div className="grid grid-cols-3 gap-2">
-              {timeSlots.map((time) => {
-                const isAvailable = isTimeSlotAvailable(time)
-                const isSelected = selectedTime === time
+              {timeSlots.map(time => {
+                const isAvailable = isTimeSlotAvailable(time);
+                const isSelected = selectedTime === time;
 
                 return (
                   <Button
@@ -371,14 +424,18 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
                     className={cn(
                       "text-sm relative",
                       !isAvailable && "opacity-50 cursor-not-allowed",
-                      isSelected && isAvailable && "bg-primary text-primary-foreground",
+                      isSelected &&
+                        isAvailable &&
+                        "bg-primary text-primary-foreground"
                     )}
                   >
                     <Clock className="h-3 w-3 mr-1" />
                     {time}
-                    {!isAvailable && <X className="h-3 w-3 ml-1 text-destructive" />}
+                    {!isAvailable && (
+                      <X className="h-3 w-3 ml-1 text-destructive" />
+                    )}
                   </Button>
-                )
+                );
               })}
             </div>
             {date && bookedSlots.length > 0 && (
@@ -396,7 +453,7 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
               id="notes"
               placeholder="Any special requests or information..."
               value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              onChange={e => setNotes(e.target.value)}
               rows={3}
             />
           </div>
@@ -405,7 +462,9 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
           <div className="bg-gradient-to-r from-primary/10 to-secondary/10 p-4 rounded-lg border border-primary/20">
             <div className="flex justify-between items-center">
               <span className="font-medium">Service Price:</span>
-              <span className="text-xl font-bold text-primary">₦{service.price.toLocaleString()}</span>
+              <span className="text-xl font-bold text-primary">
+                ₦{service.price.toLocaleString()}
+              </span>
             </div>
           </div>
 
@@ -419,5 +478,5 @@ export function AppointmentForm({ service }: AppointmentFormProps) {
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }

@@ -1,30 +1,34 @@
-import type React from "react"
-import { createServerClient } from "@/lib/supabase/server"
-import { redirect } from "next/navigation"
-import { AdminNav } from "@/components/admin/admin-nav"
-import { Button } from "@/components/ui/button"
-import { LogOut, Home } from "lucide-react"
-import Link from "next/link"
+import type React from "react";
+import { createServerClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import { AdminNav } from "@/components/admin/admin-nav";
+import { Button } from "@/components/ui/button";
+import { LogOut, Home } from "lucide-react";
+import Link from "next/link";
 
 export default async function AdminLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
-  const supabase = await createServerClient()
+  const supabase = await createServerClient();
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/auth/login?redirect=/admin")
+    redirect("/auth/login?redirect=/admin");
   }
 
-  const { data: profile } = await supabase.from("profiles").select("is_admin").eq("id", user.id).single()
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("is_admin")
+    .eq("id", user.id)
+    .single();
 
   if (!profile?.is_admin) {
-    redirect("/")
+    redirect("/");
   }
 
   return (
@@ -42,7 +46,11 @@ export default async function AdminLayout({
           </div>
           <div className="mt-auto p-4">
             <form action="/auth/signout" method="post">
-              <Button variant="outline" size="sm" className="w-full bg-transparent">
+              <Button
+                variant="outline"
+                size="sm"
+                className="w-full bg-transparent"
+              >
                 <LogOut className="h-4 w-4 mr-2" />
                 Sign Out
               </Button>
@@ -54,5 +62,5 @@ export default async function AdminLayout({
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
     </div>
-  )
+  );
 }

@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { createBrowserClient } from "@/lib/supabase/client"
-import { Button } from "@/components/ui/button"
+import { useState } from "react";
+import { createBrowserClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,38 +13,44 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Trash2 } from "lucide-react"
-import { toast } from "sonner"
-import { useRouter } from "next/navigation"
+} from "@/components/ui/alert-dialog";
+import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface DeleteServiceButtonProps {
-  serviceId: string
-  serviceName: string
+  serviceId: string;
+  serviceName: string;
 }
 
-export function DeleteServiceButton({ serviceId, serviceName }: DeleteServiceButtonProps) {
-  const [loading, setLoading] = useState(false)
-  const router = useRouter()
-  const supabase = createBrowserClient()
+export function DeleteServiceButton({
+  serviceId,
+  serviceName,
+}: DeleteServiceButtonProps) {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const supabase = createBrowserClient();
 
   const handleDelete = async () => {
-    setLoading(true)
+    setLoading(true);
 
     try {
-      const { error } = await supabase.from("services").delete().eq("id", serviceId)
+      const { error } = await supabase
+        .from("services")
+        .delete()
+        .eq("id", serviceId);
 
-      if (error) throw error
+      if (error) throw error;
 
-      toast.success("Service deleted successfully")
-      router.refresh()
+      toast.success("Service deleted successfully");
+      router.refresh();
     } catch (error) {
-      console.error("Error deleting service:", error)
-      toast.error("Failed to delete service")
+      console.error("Error deleting service:", error);
+      toast.error("Failed to delete service");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <AlertDialog>
@@ -57,8 +63,8 @@ export function DeleteServiceButton({ serviceId, serviceName }: DeleteServiceBut
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Service</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete "{serviceName}"? This action cannot be undone and will also remove all
-            associated appointments.
+            Are you sure you want to delete "{serviceName}"? This action cannot
+            be undone and will also remove all associated appointments.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -73,5 +79,5 @@ export function DeleteServiceButton({ serviceId, serviceName }: DeleteServiceBut
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }

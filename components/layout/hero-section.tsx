@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button"
-import { Sparkles, Star } from "lucide-react"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import { Sparkles, Star } from "lucide-react";
+import Link from "next/link";
 
 export function HeroSection() {
   return (
@@ -36,8 +36,9 @@ export function HeroSection() {
           Elevate Your Beauty Craft
         </h1>
         <p className="text-lg md:text-xl mb-8 text-balance leading-relaxed max-w-2xl mx-auto text-white/90">
-          Discover premium microblading tools, luxurious lash extensions, and professional beauty services. Transform
-          your artistry with MG Beauty Palace.
+          Discover premium microblading tools, luxurious lash extensions, and
+          professional beauty services. Transform your artistry with MG Beauty
+          Palace.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Button
@@ -58,5 +59,5 @@ export function HeroSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

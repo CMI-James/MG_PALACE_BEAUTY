@@ -1,27 +1,34 @@
-import { createServerClient } from "@/lib/supabase/server"
-import { redirect } from "next/navigation"
-import { ProductForm } from "@/components/admin/product-form"
-import { ArrowLeft } from "lucide-react"
-import Link from "next/link"
+import { createServerClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import { ProductForm } from "@/components/admin/product-form";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
 
 export default async function NewProductPage() {
-  const supabase = await createServerClient()
+  const supabase = await createServerClient();
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/auth/login?redirect=/admin/products/new")
+    redirect("/auth/login?redirect=/admin/products/new");
   }
 
-  const { data: profile } = await supabase.from("profiles").select("is_admin").eq("id", user.id).single()
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("is_admin")
+    .eq("id", user.id)
+    .single();
 
   if (!profile?.is_admin) {
-    redirect("/")
+    redirect("/");
   }
 
-  const { data: categories } = await supabase.from("categories").select("*").order("name")
+  const { data: categories } = await supabase
+    .from("categories")
+    .select("*")
+    .order("name");
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -35,8 +42,12 @@ export default async function NewProductPage() {
               <ArrowLeft className="h-4 w-4 mr-1" />
               Back to Products
             </Link>
-            <h1 className="text-3xl font-bold text-gray-900">Add New Product</h1>
-            <p className="mt-2 text-gray-600">Create a new product for your catalog</p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Add New Product
+            </h1>
+            <p className="mt-2 text-gray-600">
+              Create a new product for your catalog
+            </p>
           </div>
         </div>
       </div>
@@ -45,5 +56,5 @@ export default async function NewProductPage() {
         <ProductForm categories={categories || []} />
       </div>
     </div>
-  )
+  );
 }

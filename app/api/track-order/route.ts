@@ -1,21 +1,25 @@
-import { createServerClient } from "@/lib/supabase/server"
-import { type NextRequest, NextResponse } from "next/server"
+import { createServerClient } from "@/lib/supabase/server";
+import { type NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams
-  const trackingNumber = searchParams.get("tracking")
+  const searchParams = request.nextUrl.searchParams;
+  const trackingNumber = searchParams.get("tracking");
 
   if (!trackingNumber) {
-    return NextResponse.json({ error: "Tracking number is required" }, { status: 400 })
+    return NextResponse.json(
+      { error: "Tracking number is required" },
+      { status: 400 }
+    );
   }
 
   try {
-    const supabase = createServerClient()
+    const supabase = createServerClient();
 
     // Get order with tracking number
     const { data: order, error: orderError } = await supabase
       .from("orders")
-      .select(`
+      .select(
+        `
         id,
         tracking_number,
         shipping_status,
@@ -28,12 +32,13 @@ export async function GET(request: NextRequest) {
           location,
           created_at
         )
-      `)
+      `
+      )
       .eq("tracking_number", trackingNumber)
-      .single()
+      .single();
 
     if (orderError || !order) {
-      return NextResponse.json({ error: "Order not found" }, { status: 404 })
+      return NextResponse.json({ error: "Order not found" }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -43,9 +48,12 @@ export async function GET(request: NextRequest) {
       shipped_at: order.shipped_at,
       delivered_at: order.delivered_at,
       shipping_updates: order.shipping_updates || [],
-    })
+    });
   } catch (error) {
-    console.error("Error tracking order:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error("Error tracking order:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }

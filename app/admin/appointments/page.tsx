@@ -1,38 +1,50 @@
-import { createServerClient, createServiceClient } from "@/lib/supabase/server"
-import { redirect } from "next/navigation"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Calendar, Clock, User, Phone, Mail, DollarSign } from "lucide-react"
-import { AppointmentActions } from "@/components/admin/appointment-actions"
+import { createServerClient, createServiceClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Calendar, Clock, User, Phone, Mail, DollarSign } from "lucide-react";
+import { AppointmentActions } from "@/components/admin/appointment-actions";
 
 export default async function AdminAppointments() {
-  const supabase = await createServerClient()
+  const supabase = await createServerClient();
 
   const {
     data: { user },
-  } = await supabase.auth.getUser()
+  } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/auth/login?redirect=/admin/appointments")
+    redirect("/auth/login?redirect=/admin/appointments");
   }
 
   // Check if user is admin
-  const { data: profile } = await supabase.from("profiles").select("is_admin").eq("id", user.id).single()
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("is_admin")
+    .eq("id", user.id)
+    .single();
 
   if (!profile?.is_admin) {
-    redirect("/")
+    redirect("/");
   }
 
-  const service = createServiceClient()
+  const service = createServiceClient();
   const { data: appointments } = await service
     .from("appointments")
-    .select(`
+    .select(
+      `
       *,
       services(name, duration, price)
-    `)
-    .order("appointment_date", { ascending: true })
+    `
+    )
+    .order("appointment_date", { ascending: true });
 
-  console.log("[v0] Fetched appointments:", appointments?.length || 0)
+  console.log("[v0] Fetched appointments:", appointments?.length || 0);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -41,7 +53,8 @@ export default async function AdminAppointments() {
           <div className="py-6">
             <h1 className="text-3xl font-bold text-gray-900">Appointments</h1>
             <p className="mt-2 text-gray-600">
-              Manage and track all service appointments • {appointments?.length || 0} total appointments
+              Manage and track all service appointments •{" "}
+              {appointments?.length || 0} total appointments
             </p>
           </div>
         </div>
@@ -52,20 +65,38 @@ export default async function AdminAppointments() {
           <table className="w-full text-sm">
             <thead className="bg-muted/50">
               <tr>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Service</th>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Customer</th>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Contact</th>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Date</th>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Time</th>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Amount</th>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Status</th>
-                <th className="text-left py-3 px-4 font-medium text-muted-foreground">Actions</th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">
+                  Service
+                </th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">
+                  Customer
+                </th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">
+                  Contact
+                </th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">
+                  Date
+                </th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">
+                  Time
+                </th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">
+                  Amount
+                </th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">
+                  Status
+                </th>
+                <th className="text-left py-3 px-4 font-medium text-muted-foreground">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y">
               {(appointments || []).map((appointment: any) => (
                 <tr key={appointment.id} className="hover:bg-muted/20">
-                  <td className="py-3 px-4 font-medium">{appointment.services?.name}</td>
+                  <td className="py-3 px-4 font-medium">
+                    {appointment.services?.name}
+                  </td>
                   <td className="py-3 px-4">{appointment.customer_name}</td>
                   <td className="py-3 px-4">
                     <div className="flex flex-col gap-1 text-xs sm:text-sm">
@@ -82,13 +113,20 @@ export default async function AdminAppointments() {
                     </div>
                   </td>
                   <td className="py-3 px-4">
-                    {new Date(appointment.appointment_date).toLocaleDateString()}
+                    {new Date(
+                      appointment.appointment_date
+                    ).toLocaleDateString()}
                   </td>
                   <td className="py-3 px-4">
-                    {appointment.appointment_time} ({appointment.duration || appointment.services?.duration} mins)
+                    {appointment.appointment_time} (
+                    {appointment.duration || appointment.services?.duration}{" "}
+                    mins)
                   </td>
                   <td className="py-3 px-4">
-                    ₦{(appointment.total_amount ?? appointment.services?.price)?.toLocaleString()}
+                    ₦
+                    {(
+                      appointment.total_amount ?? appointment.services?.price
+                    )?.toLocaleString()}
                   </td>
                   <td className="py-3 px-4">
                     <Badge
@@ -96,10 +134,10 @@ export default async function AdminAppointments() {
                         appointment.status === "confirmed"
                           ? "default"
                           : appointment.status === "completed"
-                          ? "outline"
-                          : appointment.status === "cancelled"
-                          ? "destructive"
-                          : "secondary"
+                            ? "outline"
+                            : appointment.status === "cancelled"
+                              ? "destructive"
+                              : "secondary"
                       }
                     >
                       {appointment.status}
@@ -118,12 +156,16 @@ export default async function AdminAppointments() {
           <div className="text-center py-12">
             <div className="max-w-sm mx-auto">
               <Calendar className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-muted-foreground mb-2">No appointments found</h3>
-              <p className="text-sm text-muted-foreground">New appointments will appear here</p>
+              <h3 className="text-lg font-semibold text-muted-foreground mb-2">
+                No appointments found
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                New appointments will appear here
+              </p>
             </div>
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }

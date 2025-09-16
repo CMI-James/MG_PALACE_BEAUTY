@@ -1,22 +1,28 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { createBrowserClient } from "@/lib/supabase/client"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Switch } from "@/components/ui/switch"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft } from "lucide-react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
+import { useState } from "react";
+import { createBrowserClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function NewBannerPage() {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     message: "",
@@ -30,20 +36,22 @@ export default function NewBannerPage() {
     end_date: "",
     priority: "1",
     is_active: true,
-  })
+  });
 
-  const router = useRouter()
-  const supabase = createBrowserClient()
+  const router = useRouter();
+  const supabase = createBrowserClient();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
     try {
       const { error } = await supabase.from("promotional_banners").insert({
         title: formData.title,
         message: formData.message,
-        discount_percentage: formData.discount_percentage ? Number.parseInt(formData.discount_percentage) : null,
+        discount_percentage: formData.discount_percentage
+          ? Number.parseInt(formData.discount_percentage)
+          : null,
         discount_code: formData.discount_code || null,
         background_color: formData.background_color,
         text_color: formData.text_color,
@@ -53,19 +61,19 @@ export default function NewBannerPage() {
         end_date: formData.end_date || null,
         priority: Number.parseInt(formData.priority),
         is_active: formData.is_active,
-      })
+      });
 
-      if (error) throw error
+      if (error) throw error;
 
-      toast.success("Banner created successfully!")
-      router.push("/admin/banners")
+      toast.success("Banner created successfully!");
+      router.push("/admin/banners");
     } catch (error) {
-      console.error("Error creating banner:", error)
-      toast.error("Failed to create banner")
+      console.error("Error creating banner:", error);
+      toast.error("Failed to create banner");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -79,7 +87,9 @@ export default function NewBannerPage() {
               </Link>
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Create New Banner</h1>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Create New Banner
+              </h1>
               <p className="mt-2 text-gray-600">Add a new promotional banner</p>
             </div>
           </div>
@@ -93,7 +103,9 @@ export default function NewBannerPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Banner Content</CardTitle>
-                  <CardDescription>Configure the banner text and messaging</CardDescription>
+                  <CardDescription>
+                    Configure the banner text and messaging
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -101,7 +113,9 @@ export default function NewBannerPage() {
                     <Input
                       id="title"
                       value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                      onChange={e =>
+                        setFormData({ ...formData, title: e.target.value })
+                      }
                       placeholder="Banner title"
                       required
                     />
@@ -111,7 +125,9 @@ export default function NewBannerPage() {
                     <Textarea
                       id="message"
                       value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      onChange={e =>
+                        setFormData({ ...formData, message: e.target.value })
+                      }
                       placeholder="Banner message"
                       required
                     />
@@ -122,18 +138,27 @@ export default function NewBannerPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Discount Settings</CardTitle>
-                  <CardDescription>Optional discount configuration</CardDescription>
+                  <CardDescription>
+                    Optional discount configuration
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="discount_percentage">Discount Percentage</Label>
+                    <Label htmlFor="discount_percentage">
+                      Discount Percentage
+                    </Label>
                     <Input
                       id="discount_percentage"
                       type="number"
                       min="0"
                       max="100"
                       value={formData.discount_percentage}
-                      onChange={(e) => setFormData({ ...formData, discount_percentage: e.target.value })}
+                      onChange={e =>
+                        setFormData({
+                          ...formData,
+                          discount_percentage: e.target.value,
+                        })
+                      }
                       placeholder="e.g., 20"
                     />
                   </div>
@@ -142,7 +167,12 @@ export default function NewBannerPage() {
                     <Input
                       id="discount_code"
                       value={formData.discount_code}
-                      onChange={(e) => setFormData({ ...formData, discount_code: e.target.value })}
+                      onChange={e =>
+                        setFormData({
+                          ...formData,
+                          discount_code: e.target.value,
+                        })
+                      }
                       placeholder="e.g., SAVE20"
                     />
                   </div>
@@ -154,7 +184,9 @@ export default function NewBannerPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Appearance</CardTitle>
-                  <CardDescription>Customize the banner colors and styling</CardDescription>
+                  <CardDescription>
+                    Customize the banner colors and styling
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -163,7 +195,12 @@ export default function NewBannerPage() {
                       id="background_color"
                       type="color"
                       value={formData.background_color}
-                      onChange={(e) => setFormData({ ...formData, background_color: e.target.value })}
+                      onChange={e =>
+                        setFormData({
+                          ...formData,
+                          background_color: e.target.value,
+                        })
+                      }
                     />
                   </div>
                   <div className="space-y-2">
@@ -172,7 +209,9 @@ export default function NewBannerPage() {
                       id="text_color"
                       type="color"
                       value={formData.text_color}
-                      onChange={(e) => setFormData({ ...formData, text_color: e.target.value })}
+                      onChange={e =>
+                        setFormData({ ...formData, text_color: e.target.value })
+                      }
                     />
                   </div>
                   <div className="space-y-2">
@@ -185,7 +224,9 @@ export default function NewBannerPage() {
                       }}
                     >
                       <div className="flex items-center justify-center gap-2">
-                        <span className="font-semibold">{formData.title || "Banner Title"}</span>
+                        <span className="font-semibold">
+                          {formData.title || "Banner Title"}
+                        </span>
                         <span>{formData.message || "Banner message"}</span>
                         {formData.discount_code && (
                           <span className="inline-flex items-center gap-1 bg-white/20 px-2 py-1 rounded text-xs font-mono">
@@ -201,7 +242,9 @@ export default function NewBannerPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Link & Schedule</CardTitle>
-                  <CardDescription>Optional link and scheduling settings</CardDescription>
+                  <CardDescription>
+                    Optional link and scheduling settings
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -210,7 +253,9 @@ export default function NewBannerPage() {
                       id="link_url"
                       type="url"
                       value={formData.link_url}
-                      onChange={(e) => setFormData({ ...formData, link_url: e.target.value })}
+                      onChange={e =>
+                        setFormData({ ...formData, link_url: e.target.value })
+                      }
                       placeholder="https://example.com"
                     />
                   </div>
@@ -219,7 +264,9 @@ export default function NewBannerPage() {
                     <Input
                       id="link_text"
                       value={formData.link_text}
-                      onChange={(e) => setFormData({ ...formData, link_text: e.target.value })}
+                      onChange={e =>
+                        setFormData({ ...formData, link_text: e.target.value })
+                      }
                       placeholder="Shop Now"
                     />
                   </div>
@@ -230,7 +277,12 @@ export default function NewBannerPage() {
                         id="start_date"
                         type="date"
                         value={formData.start_date}
-                        onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+                        onChange={e =>
+                          setFormData({
+                            ...formData,
+                            start_date: e.target.value,
+                          })
+                        }
                       />
                     </div>
                     <div className="space-y-2">
@@ -239,7 +291,9 @@ export default function NewBannerPage() {
                         id="end_date"
                         type="date"
                         value={formData.end_date}
-                        onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
+                        onChange={e =>
+                          setFormData({ ...formData, end_date: e.target.value })
+                        }
                       />
                     </div>
                   </div>
@@ -251,14 +305,18 @@ export default function NewBannerPage() {
                       min="1"
                       max="10"
                       value={formData.priority}
-                      onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                      onChange={e =>
+                        setFormData({ ...formData, priority: e.target.value })
+                      }
                     />
                   </div>
                   <div className="flex items-center space-x-2">
                     <Switch
                       id="is_active"
                       checked={formData.is_active}
-                      onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
+                      onCheckedChange={checked =>
+                        setFormData({ ...formData, is_active: checked })
+                      }
                     />
                     <Label htmlFor="is_active">Active</Label>
                   </div>
@@ -278,5 +336,5 @@ export default function NewBannerPage() {
         </form>
       </div>
     </div>
-  )
+  );
 }

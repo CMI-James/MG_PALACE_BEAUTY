@@ -1,38 +1,37 @@
-import { redirect } from "next/navigation"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { getCurrentUser, getUserOrders } from "@/lib/supabase/auth"
-import { Package, ArrowLeft, Truck, Eye } from "lucide-react"
-import Link from "next/link"
+import { redirect } from "next/navigation";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { getCurrentUser, getUserOrders } from "@/lib/supabase/auth";
+import { Package, ArrowLeft, Truck, Eye } from "lucide-react";
+import Link from "next/link";
 
 export default async function OrdersPage() {
-  const user = await getCurrentUser()
+  const user = await getCurrentUser();
 
   if (!user) {
-    redirect("/auth/login")
+    redirect("/auth/login");
   }
 
-  const orders = await getUserOrders(user.id)
+  const orders = await getUserOrders(user.id);
 
   const getShippingStatusColor = (status: string) => {
     switch (status) {
       case "pending":
-        return "bg-yellow-100 text-yellow-800"
+        return "bg-yellow-100 text-yellow-800";
       case "processing":
-        return "bg-blue-100 text-blue-800"
+        return "bg-blue-100 text-blue-800";
       case "shipped":
-        return "bg-orange-100 text-orange-800"
+        return "bg-orange-100 text-orange-800";
       case "delivered":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   return (
     <div className="min-h-screen">
-
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <Link
@@ -42,8 +41,12 @@ export default async function OrdersPage() {
             <ArrowLeft className="h-4 w-4 mr-1" />
             Back to Account
           </Link>
-          <h1 className="font-serif text-3xl md:text-4xl font-bold mb-4">Order History</h1>
-          <p className="text-muted-foreground">View and track all your orders</p>
+          <h1 className="font-serif text-3xl md:text-4xl font-bold mb-4">
+            Order History
+          </h1>
+          <p className="text-muted-foreground">
+            View and track all your orders
+          </p>
         </div>
 
         {orders.length === 0 ? (
@@ -52,7 +55,8 @@ export default async function OrdersPage() {
               <Package className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">No orders yet</h3>
               <p className="text-muted-foreground mb-6">
-                You haven't placed any orders yet. Start shopping to see your orders here.
+                You haven't placed any orders yet. Start shopping to see your
+                orders here.
               </p>
               <Button asChild>
                 <Link href="/products">Start Shopping</Link>
@@ -61,21 +65,28 @@ export default async function OrdersPage() {
           </Card>
         ) : (
           <div className="space-y-6">
-            {orders.map((order) => (
+            {orders.map(order => (
               <Card key={order.id}>
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div>
-                      <CardTitle className="text-lg">Order #{order.id.slice(0, 8)}</CardTitle>
+                      <CardTitle className="text-lg">
+                        Order #{order.id.slice(0, 8)}
+                      </CardTitle>
                       <p className="text-sm text-muted-foreground">
-                        Placed on {new Date(order.created_at).toLocaleDateString()}
+                        Placed on{" "}
+                        {new Date(order.created_at).toLocaleDateString()}
                       </p>
                       {order.tracking_number && (
                         <div className="flex items-center gap-2 mt-2">
                           <Truck className="h-4 w-4 text-muted-foreground" />
-                          <span className="text-sm font-mono">{order.tracking_number}</span>
+                          <span className="text-sm font-mono">
+                            {order.tracking_number}
+                          </span>
                           <Button variant="outline" size="sm" asChild>
-                            <Link href={`/track?tracking=${order.tracking_number}`}>
+                            <Link
+                              href={`/track?tracking=${order.tracking_number}`}
+                            >
                               <Eye className="h-3 w-3 mr-1" />
                               Track
                             </Link>
@@ -84,12 +95,27 @@ export default async function OrdersPage() {
                       )}
                     </div>
                     <div className="text-right space-y-2">
-                      <p className="font-bold text-lg">₦{order.total_amount.toLocaleString()}</p>
+                      <p className="font-bold text-lg">
+                        ₦{order.total_amount.toLocaleString()}
+                      </p>
                       <div className="flex flex-col gap-1">
-                        <Badge variant={order.status === "completed" ? "default" : "secondary"}>{order.status}</Badge>
+                        <Badge
+                          variant={
+                            order.status === "completed"
+                              ? "default"
+                              : "secondary"
+                          }
+                        >
+                          {order.status}
+                        </Badge>
                         {order.shipping_status && (
-                          <Badge className={getShippingStatusColor(order.shipping_status)}>
-                            {order.shipping_status.charAt(0).toUpperCase() + order.shipping_status.slice(1)}
+                          <Badge
+                            className={getShippingStatusColor(
+                              order.shipping_status
+                            )}
+                          >
+                            {order.shipping_status.charAt(0).toUpperCase() +
+                              order.shipping_status.slice(1)}
                           </Badge>
                         )}
                       </div>
@@ -98,8 +124,11 @@ export default async function OrdersPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {order.order_items?.map((item) => (
-                      <div key={item.id} className="flex items-center space-x-4">
+                    {order.order_items?.map(item => (
+                      <div
+                        key={item.id}
+                        className="flex items-center space-x-4"
+                      >
                         <div className="h-12 w-12 rounded-md overflow-hidden">
                           <img
                             src={item.product?.image_url || "/placeholder.svg"}
@@ -110,10 +139,13 @@ export default async function OrdersPage() {
                         <div className="flex-1">
                           <p className="font-medium">{item.products?.name}</p>
                           <p className="text-sm text-muted-foreground">
-                            Qty: {item.quantity} × ₦{item.price.toLocaleString()}
+                            Qty: {item.quantity} × ₦
+                            {item.price.toLocaleString()}
                           </p>
                         </div>
-                        <p className="font-medium">₦{(item.price * item.quantity).toLocaleString()}</p>
+                        <p className="font-medium">
+                          ₦{(item.price * item.quantity).toLocaleString()}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -121,11 +153,18 @@ export default async function OrdersPage() {
                   <div className="mt-4 pt-4 border-t">
                     <div className="flex justify-between text-sm">
                       <span>Subtotal:</span>
-                      <span>₦{(order.total_amount - (order.shipping_amount || 0)).toLocaleString()}</span>
+                      <span>
+                        ₦
+                        {(
+                          order.total_amount - (order.shipping_amount || 0)
+                        ).toLocaleString()}
+                      </span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span>Shipping:</span>
-                      <span>₦{(order.shipping_amount || 0).toLocaleString()}</span>
+                      <span>
+                        ₦{(order.shipping_amount || 0).toLocaleString()}
+                      </span>
                     </div>
                     <div className="flex justify-between font-bold">
                       <span>Total:</span>
@@ -150,7 +189,9 @@ export default async function OrdersPage() {
                     )}
                     {order.status === "delivered" && (
                       <Button variant="outline" size="sm" asChild>
-                        <Link href={`/account/orders/${order.id}/review`}>Leave Review</Link>
+                        <Link href={`/account/orders/${order.id}/review`}>
+                          Leave Review
+                        </Link>
                       </Button>
                     )}
                   </div>
@@ -160,7 +201,6 @@ export default async function OrdersPage() {
           </div>
         )}
       </main>
-
     </div>
-  )
+  );
 }

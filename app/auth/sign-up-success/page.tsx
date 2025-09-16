@@ -1,12 +1,17 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Mail } from "lucide-react"
-import Link from "next/link"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Mail } from "lucide-react";
+import Link from "next/link";
 
 export default function SignUpSuccessPage() {
   return (
     <div className="min-h-screen">
-
       <main className="container mx-auto px-4 py-16">
         <div className="max-w-md mx-auto text-center">
           <Card>
@@ -15,12 +20,14 @@ export default function SignUpSuccessPage() {
                 <Mail className="h-8 w-8 text-primary" />
               </div>
               <CardTitle className="text-2xl">Check Your Email</CardTitle>
-              <CardDescription>We've sent you a verification link to complete your registration</CardDescription>
+              <CardDescription>
+                We've sent you a verification link to complete your registration
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                Please check your email and click the verification link to activate your account. You may need to check
-                your spam folder.
+                Please check your email and click the verification link to
+                activate your account. You may need to check your spam folder.
               </p>
               <Button asChild className="w-full">
                 <Link href="/auth/login">Back to Sign In</Link>
@@ -29,7 +36,6 @@ export default function SignUpSuccessPage() {
           </Card>
         </div>
       </main>
-
     </div>
-  )
+  );
 }

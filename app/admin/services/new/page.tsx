@@ -1,25 +1,37 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { createBrowserClient } from "@/lib/supabase/client"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Switch } from "@/components/ui/switch"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft } from "lucide-react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
-import { useEffect } from "react"
+import { useState } from "react";
+import { createBrowserClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 export default function NewServicePage() {
-  const [loading, setLoading] = useState(false)
-  const [categories, setCategories] = useState<any[]>([])
+  const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<any[]>([]);
   const [formData, setFormData] = useState({
     name: "",
     slug: "",
@@ -31,37 +43,40 @@ export default function NewServicePage() {
     is_bookable: true,
     is_active: true,
     images: [""],
-  })
+  });
 
-  const router = useRouter()
-  const supabase = createBrowserClient()
+  const router = useRouter();
+  const supabase = createBrowserClient();
 
   useEffect(() => {
     async function loadCategories() {
-      const { data } = await supabase.from("categories").select("*").order("name")
-      setCategories(data || [])
+      const { data } = await supabase
+        .from("categories")
+        .select("*")
+        .order("name");
+      setCategories(data || []);
     }
-    loadCategories()
-  }, [supabase])
+    loadCategories();
+  }, [supabase]);
 
   const generateSlug = (name: string) => {
     return name
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "")
-  }
+      .replace(/(^-|-$)/g, "");
+  };
 
   const handleNameChange = (name: string) => {
     setFormData({
       ...formData,
       name,
       slug: generateSlug(name),
-    })
-  }
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
     try {
       const { error } = await supabase.from("services").insert({
@@ -74,20 +89,20 @@ export default function NewServicePage() {
         category_id: formData.category_id,
         is_bookable: formData.is_bookable,
         is_active: formData.is_active,
-        images: formData.images.filter((img) => img.trim() !== ""),
-      })
+        images: formData.images.filter(img => img.trim() !== ""),
+      });
 
-      if (error) throw error
+      if (error) throw error;
 
-      toast.success("Service created successfully!")
-      router.push("/admin/services")
+      toast.success("Service created successfully!");
+      router.push("/admin/services");
     } catch (error) {
-      console.error("Error creating service:", error)
-      toast.error("Failed to create service")
+      console.error("Error creating service:", error);
+      toast.error("Failed to create service");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -101,8 +116,12 @@ export default function NewServicePage() {
               </Link>
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Create New Service</h1>
-              <p className="mt-2 text-gray-600">Add a new service to your offerings</p>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Create New Service
+              </h1>
+              <p className="mt-2 text-gray-600">
+                Add a new service to your offerings
+              </p>
             </div>
           </div>
         </div>
@@ -115,7 +134,9 @@ export default function NewServicePage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Service Information</CardTitle>
-                  <CardDescription>Basic service details and description</CardDescription>
+                  <CardDescription>
+                    Basic service details and description
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -123,7 +144,7 @@ export default function NewServicePage() {
                     <Input
                       id="name"
                       value={formData.name}
-                      onChange={(e) => handleNameChange(e.target.value)}
+                      onChange={e => handleNameChange(e.target.value)}
                       placeholder="e.g., Professional Microblading"
                       required
                     />
@@ -133,17 +154,26 @@ export default function NewServicePage() {
                     <Input
                       id="slug"
                       value={formData.slug}
-                      onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
+                      onChange={e =>
+                        setFormData({ ...formData, slug: e.target.value })
+                      }
                       placeholder="professional-microblading"
                       required
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="short_description">Short Description *</Label>
+                    <Label htmlFor="short_description">
+                      Short Description *
+                    </Label>
                     <Textarea
                       id="short_description"
                       value={formData.short_description}
-                      onChange={(e) => setFormData({ ...formData, short_description: e.target.value })}
+                      onChange={e =>
+                        setFormData({
+                          ...formData,
+                          short_description: e.target.value,
+                        })
+                      }
                       placeholder="Brief description for service cards"
                       rows={2}
                       required
@@ -154,7 +184,12 @@ export default function NewServicePage() {
                     <Textarea
                       id="description"
                       value={formData.description}
-                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                      onChange={e =>
+                        setFormData({
+                          ...formData,
+                          description: e.target.value,
+                        })
+                      }
                       placeholder="Detailed service description"
                       rows={4}
                       required
@@ -175,10 +210,10 @@ export default function NewServicePage() {
                       id="image1"
                       type="url"
                       value={formData.images[0]}
-                      onChange={(e) => {
-                        const newImages = [...formData.images]
-                        newImages[0] = e.target.value
-                        setFormData({ ...formData, images: newImages })
+                      onChange={e => {
+                        const newImages = [...formData.images];
+                        newImages[0] = e.target.value;
+                        setFormData({ ...formData, images: newImages });
                       }}
                       placeholder="https://example.com/image.jpg"
                     />
@@ -191,7 +226,9 @@ export default function NewServicePage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Pricing & Duration</CardTitle>
-                  <CardDescription>Service pricing and time requirements</CardDescription>
+                  <CardDescription>
+                    Service pricing and time requirements
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
@@ -202,7 +239,9 @@ export default function NewServicePage() {
                       min="0"
                       step="0.01"
                       value={formData.price}
-                      onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+                      onChange={e =>
+                        setFormData({ ...formData, price: e.target.value })
+                      }
                       placeholder="50000"
                       required
                     />
@@ -214,7 +253,9 @@ export default function NewServicePage() {
                       type="number"
                       min="0"
                       value={formData.duration}
-                      onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
+                      onChange={e =>
+                        setFormData({ ...formData, duration: e.target.value })
+                      }
                       placeholder="120"
                     />
                   </div>
@@ -222,14 +263,16 @@ export default function NewServicePage() {
                     <Label htmlFor="category">Category *</Label>
                     <Select
                       value={formData.category_id}
-                      onValueChange={(value) => setFormData({ ...formData, category_id: value })}
+                      onValueChange={value =>
+                        setFormData({ ...formData, category_id: value })
+                      }
                       required
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
                       <SelectContent>
-                        {categories.map((category) => (
+                        {categories.map(category => (
                           <SelectItem key={category.id} value={category.id}>
                             {category.name}
                           </SelectItem>
@@ -243,14 +286,18 @@ export default function NewServicePage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Service Settings</CardTitle>
-                  <CardDescription>Availability and booking settings</CardDescription>
+                  <CardDescription>
+                    Availability and booking settings
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-center space-x-2">
                     <Switch
                       id="is_bookable"
                       checked={formData.is_bookable}
-                      onCheckedChange={(checked) => setFormData({ ...formData, is_bookable: checked })}
+                      onCheckedChange={checked =>
+                        setFormData({ ...formData, is_bookable: checked })
+                      }
                     />
                     <Label htmlFor="is_bookable">Allow Online Booking</Label>
                   </div>
@@ -258,7 +305,9 @@ export default function NewServicePage() {
                     <Switch
                       id="is_active"
                       checked={formData.is_active}
-                      onCheckedChange={(checked) => setFormData({ ...formData, is_active: checked })}
+                      onCheckedChange={checked =>
+                        setFormData({ ...formData, is_active: checked })
+                      }
                     />
                     <Label htmlFor="is_active">Active</Label>
                   </div>
@@ -278,5 +327,5 @@ export default function NewServicePage() {
         </form>
       </div>
     </div>
-  )
+  );
 }

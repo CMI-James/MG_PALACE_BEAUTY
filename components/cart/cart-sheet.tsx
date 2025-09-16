@@ -1,20 +1,34 @@
-"use client"
+"use client";
 
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { Separator } from "@/components/ui/separator"
-import { ShoppingCart, Plus, Minus, X } from "lucide-react"
-import { useCartStore } from "@/lib/cart-store"
-import Link from "next/link"
-import Image from "next/image"
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { ShoppingCart, Plus, Minus, X } from "lucide-react";
+import { useCartStore } from "@/lib/cart-store";
+import Link from "next/link";
+import Image from "next/image";
 
 export function CartSheet() {
-  const { items, isOpen, setIsOpen, updateQuantity, removeItem, getTotalItems, getTotalPrice } = useCartStore()
+  const {
+    items,
+    isOpen,
+    setIsOpen,
+    updateQuantity,
+    removeItem,
+    getTotalItems,
+    getTotalPrice,
+  } = useCartStore();
 
-  const totalItems = getTotalItems()
-  const totalPrice = getTotalPrice()
+  const totalItems = getTotalItems();
+  const totalPrice = getTotalPrice();
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -40,7 +54,9 @@ export function CartSheet() {
           <div className="flex flex-col items-center justify-center h-full text-center">
             <ShoppingCart className="h-16 w-16 text-muted-foreground mb-4" />
             <h3 className="text-lg font-semibold mb-2">Your cart is empty</h3>
-            <p className="text-muted-foreground mb-6">Add some products to get started</p>
+            <p className="text-muted-foreground mb-6">
+              Add some products to get started
+            </p>
             <Button asChild onClick={() => setIsOpen(false)}>
               <Link href="/products">Continue Shopping</Link>
             </Button>
@@ -49,10 +65,15 @@ export function CartSheet() {
           <div className="flex flex-col h-full">
             <ScrollArea className="flex-1 -mx-6 px-6">
               <div className="space-y-4 py-4">
-                {items.map((item) => (
+                {items.map(item => (
                   <div key={item.id} className="flex items-center space-x-4">
                     <div className="relative h-16 w-16 rounded-md overflow-hidden">
-                      <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover" />
+                      <Image
+                        src={item.image || "/placeholder.svg"}
+                        alt={item.name}
+                        fill
+                        className="object-cover"
+                      />
                     </div>
                     <div className="flex-1 space-y-1">
                       <Link
@@ -62,29 +83,39 @@ export function CartSheet() {
                       >
                         {item.name}
                       </Link>
-                      <p className="text-sm text-muted-foreground">₦{item.price.toLocaleString()}</p>
+                      <p className="text-sm text-muted-foreground">
+                        ₦{item.price.toLocaleString()}
+                      </p>
                       <div className="flex items-center space-x-2">
                         <Button
                           variant="outline"
                           size="icon"
                           className="h-6 w-6 bg-transparent"
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity - 1)
+                          }
                         >
                           <Minus className="h-3 w-3" />
                         </Button>
-                        <span className="text-sm font-medium w-8 text-center">{item.quantity}</span>
+                        <span className="text-sm font-medium w-8 text-center">
+                          {item.quantity}
+                        </span>
                         <Button
                           variant="outline"
                           size="icon"
                           className="h-6 w-6 bg-transparent"
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          onClick={() =>
+                            updateQuantity(item.id, item.quantity + 1)
+                          }
                         >
                           <Plus className="h-3 w-3" />
                         </Button>
                       </div>
                     </div>
                     <div className="flex flex-col items-end space-y-2">
-                      <p className="text-sm font-medium">₦{(item.price * item.quantity).toLocaleString()}</p>
+                      <p className="text-sm font-medium">
+                        ₦{(item.price * item.quantity).toLocaleString()}
+                      </p>
                       <Button
                         variant="ghost"
                         size="icon"
@@ -106,7 +137,11 @@ export function CartSheet() {
                 <span>₦{totalPrice.toLocaleString()}</span>
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <Button variant="outline" asChild onClick={() => setIsOpen(false)}>
+                <Button
+                  variant="outline"
+                  asChild
+                  onClick={() => setIsOpen(false)}
+                >
                   <Link href="/cart">View Cart</Link>
                 </Button>
                 <Button asChild onClick={() => setIsOpen(false)}>
@@ -118,5 +153,5 @@ export function CartSheet() {
         )}
       </SheetContent>
     </Sheet>
-  )
+  );
 }

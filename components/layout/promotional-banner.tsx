@@ -1,87 +1,91 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { X, Gift, Percent, Truck } from "lucide-react"
-import Link from "next/link"
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { X, Gift, Percent, Truck } from "lucide-react";
+import Link from "next/link";
 
 interface PromotionalBanner {
-  id: string
-  title: string
-  message: string
-  discount_percentage?: number
-  discount_code?: string
-  background_color: string
-  text_color: string
-  link_url?: string
-  link_text?: string
-  priority: number
+  id: string;
+  title: string;
+  message: string;
+  discount_percentage?: number;
+  discount_code?: string;
+  background_color: string;
+  text_color: string;
+  link_url?: string;
+  link_text?: string;
+  priority: number;
 }
 
 export function PromotionalBanner() {
-  const [banners, setBanners] = useState<PromotionalBanner[]>([])
-  const [currentBannerIndex, setCurrentBannerIndex] = useState(0)
-  const [isVisible, setIsVisible] = useState(true)
-  const [dismissedBanners, setDismissedBanners] = useState<string[]>([])
+  const [banners, setBanners] = useState<PromotionalBanner[]>([]);
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0);
+  const [isVisible, setIsVisible] = useState(true);
+  const [dismissedBanners, setDismissedBanners] = useState<string[]>([]);
 
   useEffect(() => {
     // Load dismissed banners from localStorage
-    const dismissed = localStorage.getItem("dismissedBanners")
+    const dismissed = localStorage.getItem("dismissedBanners");
     if (dismissed) {
-      setDismissedBanners(JSON.parse(dismissed))
+      setDismissedBanners(JSON.parse(dismissed));
     }
 
     // Fetch active banners
-    fetchBanners()
-  }, [])
+    fetchBanners();
+  }, []);
 
   useEffect(() => {
     // Auto-rotate banners every 5 seconds if there are multiple
     if (banners.length > 1) {
       const interval = setInterval(() => {
-        setCurrentBannerIndex((prev) => (prev + 1) % banners.length)
-      }, 5000)
-      return () => clearInterval(interval)
+        setCurrentBannerIndex(prev => (prev + 1) % banners.length);
+      }, 5000);
+      return () => clearInterval(interval);
     }
-  }, [banners.length])
+  }, [banners.length]);
 
   const fetchBanners = async () => {
     try {
-      const response = await fetch("/api/promotional-banners")
+      const response = await fetch("/api/promotional-banners");
       if (response.ok) {
-        const data = await response.json()
-        setBanners(data)
+        const data = await response.json();
+        setBanners(data);
       }
     } catch (error) {
-      console.error("Failed to fetch banners:", error)
+      console.error("Failed to fetch banners:", error);
     }
-  }
+  };
 
   const dismissBanner = (bannerId: string) => {
-    const newDismissed = [...dismissedBanners, bannerId]
-    setDismissedBanners(newDismissed)
-    localStorage.setItem("dismissedBanners", JSON.stringify(newDismissed))
+    const newDismissed = [...dismissedBanners, bannerId];
+    setDismissedBanners(newDismissed);
+    localStorage.setItem("dismissedBanners", JSON.stringify(newDismissed));
 
     // If all banners are dismissed, hide the component
     if (newDismissed.length >= banners.length) {
-      setIsVisible(false)
+      setIsVisible(false);
     }
-  }
+  };
 
   const getIcon = (banner: PromotionalBanner) => {
-    if (banner.discount_percentage) return <Percent className="h-4 w-4" />
-    if (banner.message.toLowerCase().includes("shipping")) return <Truck className="h-4 w-4" />
-    return <Gift className="h-4 w-4" />
-  }
+    if (banner.discount_percentage) return <Percent className="h-4 w-4" />;
+    if (banner.message.toLowerCase().includes("shipping"))
+      return <Truck className="h-4 w-4" />;
+    return <Gift className="h-4 w-4" />;
+  };
 
   // Filter out dismissed banners
-  const activeBanners = banners.filter((banner) => !dismissedBanners.includes(banner.id))
+  const activeBanners = banners.filter(
+    banner => !dismissedBanners.includes(banner.id)
+  );
 
   if (!isVisible || activeBanners.length === 0) {
-    return null
+    return null;
   }
 
-  const currentBanner = activeBanners[currentBannerIndex % activeBanners.length]
+  const currentBanner =
+    activeBanners[currentBannerIndex % activeBanners.length];
 
   return (
     <div
@@ -111,7 +115,9 @@ export function PromotionalBanner() {
               size="sm"
               className="ml-2 bg-white/20 hover:bg-white/30 text-current border-white/30"
             >
-              <Link href={currentBanner.link_url}>{currentBanner.link_text}</Link>
+              <Link href={currentBanner.link_url}>
+                {currentBanner.link_text}
+              </Link>
             </Button>
           )}
         </div>
@@ -142,5 +148,5 @@ export function PromotionalBanner() {
         </div>
       )}
     </div>
-  )
+  );
 }
