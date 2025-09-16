@@ -3,8 +3,6 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -79,7 +77,6 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen">
-      <Header />
 
       <main>
         {/* Hero Section */}
@@ -321,7 +318,6 @@ export default function ContactPage() {
         </section>
       </main>
 
-      <Footer />
     </div>
   )
 }

@@ -1,6 +1,4 @@
 import { redirect, notFound } from "next/navigation"
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -76,7 +74,6 @@ export default async function OrderDetailPage({ params }: { params: { id: string
 
   return (
     <div className="min-h-screen">
-      <Header />
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
@@ -315,7 +312,6 @@ export default async function OrderDetailPage({ params }: { params: { id: string
         </div>
       </main>
 
-      <Footer />
     </div>
   )
 }

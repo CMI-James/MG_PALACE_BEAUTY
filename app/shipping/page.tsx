@@ -1,12 +1,9 @@
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Truck, Clock, MapPin, Package } from "lucide-react"
 
 export default function ShippingPage() {
   return (
     <div className="min-h-screen">
-      <Header />
 
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
@@ -167,7 +164,6 @@ export default function ShippingPage() {
         </div>
       </main>
 
-      <Footer />
     </div>
   )
 }

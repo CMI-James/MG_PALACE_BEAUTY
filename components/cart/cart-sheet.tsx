@@ -31,7 +31,7 @@ export function CartSheet() {
           )}
         </Button>
       </SheetTrigger>
-      <SheetContent className="w-full sm:max-w-lg">
+      <SheetContent className="w-full sm:max-w-lg py-5">
         <SheetHeader>
           <SheetTitle>Shopping Cart ({totalItems})</SheetTitle>
         </SheetHeader>

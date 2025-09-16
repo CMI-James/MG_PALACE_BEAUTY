@@ -1,7 +1,5 @@
 "use client"
 
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -20,7 +18,6 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="min-h-screen">
-        <Header />
         <main className="container mx-auto px-4 py-16">
           <div className="text-center max-w-md mx-auto">
             <ShoppingCart className="h-24 w-24 text-muted-foreground mx-auto mb-6" />
@@ -36,14 +33,12 @@ export default function CartPage() {
             </Button>
           </div>
         </main>
-        <Footer />
       </div>
     )
   }
 
   return (
     <div className="min-h-screen">
-      <Header />
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
@@ -179,7 +174,6 @@ export default function CartPage() {
         </div>
       </main>
 
-      <Footer />
     </div>
   )
 }

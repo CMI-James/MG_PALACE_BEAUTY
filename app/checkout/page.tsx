@@ -1,5 +1,3 @@
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { CheckoutForm } from "@/components/checkout/checkout-form"
 import { getCurrentUser, getUserAddresses } from "@/lib/supabase/auth"
 import { ArrowLeft } from "lucide-react"
@@ -20,7 +18,6 @@ export default async function CheckoutPage() {
 
   return (
     <div className="min-h-screen">
-      <Header />
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
@@ -43,7 +40,6 @@ export default async function CheckoutPage() {
         />
       </main>
 
-      <Footer />
     </div>
   )
 }

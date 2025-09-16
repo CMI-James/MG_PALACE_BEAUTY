@@ -1,6 +1,4 @@
 import { redirect } from "next/navigation"
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -23,8 +21,6 @@ export default async function AccountPage() {
 
   return (
     <div className="min-h-screen">
-      <Header />
-
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="font-serif text-3xl md:text-4xl font-bold mb-4">My Account</h1>
@@ -190,8 +186,6 @@ export default async function AccountPage() {
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   )
 }

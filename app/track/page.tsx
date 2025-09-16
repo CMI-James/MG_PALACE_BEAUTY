@@ -4,8 +4,6 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -108,7 +106,6 @@ export default function TrackOrderPage() {
 
   return (
     <div className="min-h-screen">
-      <Header />
 
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-2xl mx-auto">
@@ -306,7 +303,6 @@ export default function TrackOrderPage() {
         </div>
       </main>
 
-      <Footer />
     </div>
   )
 }

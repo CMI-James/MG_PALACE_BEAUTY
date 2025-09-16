@@ -150,7 +150,7 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="border-t border-slate-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <p className="text-sm text-slate-300">© 2024 MG Beauty Palace. All rights reserved.</p>
+          <p className="text-sm text-slate-300">© {new Date().getFullYear()} MG Beauty Palace. All rights reserved.</p>
           <div className="flex space-x-6">
             <Link href="/privacy" className="text-sm text-slate-300 hover:text-primary transition-colors">
               Privacy Policy

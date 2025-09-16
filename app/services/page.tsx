@@ -1,18 +1,16 @@
-import { Suspense } from "react"
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
-import { ServiceCard } from "@/components/services/service-card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Skeleton } from "@/components/ui/skeleton"
-import { getServices, getCategories } from "@/lib/supabase/queries"
-import Link from "next/link"
-import { Filter, Calendar } from "lucide-react"
+import { Suspense } from "react";
+import { ServiceCard } from "@/components/services/service-card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getServices, getCategories } from "@/lib/supabase/queries";
+import Link from "next/link";
+import { Filter, Calendar } from "lucide-react";
 
 interface ServicesPageProps {
   searchParams: Promise<{
-    category?: string
-  }>
+    category?: string;
+  }>;
 }
 
 function ServiceSkeleton() {
@@ -24,11 +22,11 @@ function ServiceSkeleton() {
       <Skeleton className="h-4 w-1/2" />
       <Skeleton className="h-10 w-full" />
     </div>
-  )
+  );
 }
 
 async function ServicesGrid({ category }: { category?: string }) {
-  const services = await getServices({ category })
+  const services = await getServices({ category });
 
   if (services.length === 0) {
     return (
@@ -38,7 +36,7 @@ async function ServicesGrid({ category }: { category?: string }) {
           <Link href="/services">View All Services</Link>
         </Button>
       </div>
-    )
+    );
   }
 
   return (
@@ -47,35 +45,31 @@ async function ServicesGrid({ category }: { category?: string }) {
         <ServiceCard key={service.id} service={service} />
       ))}
     </>
-  )
+  );
 }
 
-export default async function ServicesPage({ searchParams }: ServicesPageProps) {
-  const params = await searchParams
-  const categories = await getCategories()
-  const selectedCategory = categories.find((cat) => cat.slug === params.category)
+export default async function ServicesPage({
+  searchParams,
+}: ServicesPageProps) {
+  const params = await searchParams;
+  const categories = await getCategories();
+  const selectedCategory = categories.find(
+    (cat) => cat.slug === params.category
+  );
 
   return (
     <div className="min-h-screen">
-      <Header />
-
       <main className="container mx-auto px-4 py-8">
         {/* Page Header */}
-        <div className="text-center mb-12">
+        <div className="mb-8">
           <h1 className="font-serif text-3xl md:text-4xl font-bold mb-4">
             {selectedCategory ? selectedCategory.name : "Beauty Services"}
           </h1>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-lg">
             {selectedCategory
               ? selectedCategory.description
               : "Professional beauty treatments and training courses by certified experts"}
           </p>
-          <Button asChild className="mt-6" size="lg">
-            <Link href="/booking">
-              <Calendar className="h-5 w-5 mr-2" />
-              Book Consultation
-            </Link>
-          </Button>
         </div>
 
         {/* Filters */}
@@ -87,20 +81,28 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
                 <Filter className="h-4 w-4 mr-2" />
                 Service Categories
               </h3>
-              <div className="space-y-2">
-                <Link href="/services">
+              <div className="space-y-4">
+                <Link href="/services" className="block">
                   <Badge
                     variant={!params.category ? "default" : "outline"}
-                    className="w-full justify-start cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                    className="w-full justify-start cursor-pointer hover:bg-primary hover:text-primary-foreground text-sm py-2 px-3"
                   >
                     All Services
                   </Badge>
                 </Link>
                 {categories.map((category) => (
-                  <Link key={category.id} href={`/services?category=${category.slug}`}>
+                  <Link
+                    key={category.id}
+                    href={`/services?category=${category.slug}`}
+                    className="block mb-4"
+                  >
                     <Badge
-                      variant={params.category === category.slug ? "default" : "outline"}
-                      className="w-full justify-start cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                      variant={
+                        params.category === category.slug
+                          ? "default"
+                          : "outline"
+                      }
+                      className="w-full justify-start cursor-pointer hover:bg-primary hover:text-primary-foreground text-sm py-2 px-3"
                     >
                       {category.name}
                     </Badge>
@@ -113,15 +115,17 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
           {/* Services Grid */}
           <div className="flex-1">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Suspense fallback={Array.from({ length: 6 }).map((_, i) => <ServiceSkeleton key={i} />)}>
+              <Suspense
+                fallback={Array.from({ length: 6 }).map((_, i) => (
+                  <ServiceSkeleton key={i} />
+                ))}
+              >
                 <ServicesGrid category={params.category} />
               </Suspense>
             </div>
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
-  )
+  );
 }

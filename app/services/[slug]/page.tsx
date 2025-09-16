@@ -1,6 +1,4 @@
 import { notFound } from "next/navigation"
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -54,7 +52,6 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
   return (
     <div className="min-h-screen">
-      <Header />
 
       <main className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
@@ -210,7 +207,6 @@ export default async function ServicePage({ params }: ServicePageProps) {
         )}
       </main>
 
-      <Footer />
     </div>
   )
 }
