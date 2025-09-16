@@ -34,8 +34,20 @@ export function createServiceClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-  if (!url || !serviceKey) {
-    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY")
+  if (!url) {
+    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL")
+  }
+
+  if (!serviceKey) {
+    console.warn("SUPABASE_SERVICE_ROLE_KEY not found. Admin operations may not work properly.")
+    // Fallback to regular client - this will still be subject to RLS
+    return createSupabaseJsClient(url, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+        detectSessionInUrl: false,
+      },
+    })
   }
 
   return createSupabaseJsClient(url, serviceKey, {

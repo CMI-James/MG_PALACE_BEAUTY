@@ -1,4 +1,4 @@
-import { createServerClient } from "@/lib/supabase/server"
+import { createServerClient, createServiceClient } from "@/lib/supabase/server"
 import { type NextRequest, NextResponse } from "next/server"
 
 export async function POST(request: NextRequest) {
@@ -21,16 +21,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
+    // Use service client for admin operations (bypass RLS)
+    const service = createServiceClient()
+    
+    // Transform the data to match database schema
+    const transformedData = {
+      ...productData,
+      // Convert image_url to images array if provided
+      images: productData.image_url ? [productData.image_url] : null,
+      // Remove image_url as it's not in the database schema
+      image_url: undefined,
+      // Convert compare_price 0 to null
+      compare_price: productData.compare_price === 0 ? null : productData.compare_price,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    }
+    
     // Create the product
-    const { data: product, error } = await supabase
+    const { data: product, error } = await service
       .from("products")
-      .insert([
-        {
-          ...productData,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        },
-      ])
+      .insert([transformedData])
       .select()
       .single()
 

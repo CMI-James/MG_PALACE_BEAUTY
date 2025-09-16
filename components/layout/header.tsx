@@ -20,7 +20,7 @@ import { CartSheet } from "@/components/cart/cart-sheet"
 import { createBrowserClient } from "@/lib/supabase/client"
 
 const navigation = [
-  { name: "Home", href: "/" },
+
   { name: "Products", href: "/products" },
   { name: "Services", href: "/services" },
   { name: "About", href: "/about" },

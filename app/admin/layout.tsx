@@ -28,8 +28,8 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <div className="hidden border-r bg-muted/40 md:block">
+    <div className="flex min-h-screen w-full">
+      <div className="hidden border-r bg-muted/40 md:block md:w-[220px] lg:w-[280px] fixed left-0 top-0 h-full z-10">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
@@ -37,7 +37,7 @@ export default async function AdminLayout({
               <span className="">MG Beauty Palace</span>
             </Link>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 overflow-y-auto">
             <AdminNav />
           </div>
           <div className="mt-auto p-4">
@@ -50,7 +50,7 @@ export default async function AdminLayout({
           </div>
         </div>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col flex-1 md:ml-[220px] lg:ml-[280px]">
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
     </div>
