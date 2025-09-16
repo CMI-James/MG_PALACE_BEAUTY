@@ -46,7 +46,7 @@ INSERT INTO products (name, description, short_description, price, compare_price
   (SELECT id FROM categories WHERE slug = 'facial-treatments'),
   '["https://placeholder.svg?height=400&width=400&query=facial serum bottle", "https://placeholder.svg?height=400&width=400&query=skincare serum application"]',
   ARRAY['skincare', 'serum', 'hydrating', 'facial'],
-  false,
+  true,
   'hydrating-facial-serum'
 ),
 (

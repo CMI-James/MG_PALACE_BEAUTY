@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { getServiceBySlug, getServices } from "@/lib/supabase/queries"
 import { AppointmentForm } from "@/components/booking/appointment-form"
 import { Clock, Star, CheckCircle } from "lucide-react"
@@ -57,21 +58,31 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
       <main className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-8">
-          <Link href="/" className="hover:text-primary">
-            Home
-          </Link>
-          <span>/</span>
-          <Link href="/services" className="hover:text-primary">
-            Services
-          </Link>
-          <span>/</span>
-          <Link href={`/services?category=${service.category.slug}`} className="hover:text-primary">
-            {service.category.name}
-          </Link>
-          <span>/</span>
-          <span className="text-foreground">{service.name}</span>
-        </nav>
+        <Breadcrumb className="mb-8">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/services">Services</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href={`/services?category=${service.category.slug}`}>{service.category.name}</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{service.name}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mb-16">
           {/* Service Images */}

@@ -5,6 +5,8 @@ import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { Toaster } from "sonner"
 import { PromotionalBanner } from "@/components/layout/promotional-banner"
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
 import "./globals.css"
 
 const montserrat = Montserrat({
@@ -35,7 +37,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${montserrat.variable} ${playfairDisplay.variable}`}>
         <PromotionalBanner />
+        <Header />
         <Suspense fallback={null}>{children}</Suspense>
+        <Footer />
         <Toaster position="top-right" />
         <Analytics />
       </body>

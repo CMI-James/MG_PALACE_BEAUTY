@@ -55,17 +55,22 @@ export function AddToCartButton({ product, className, size = "default", disabled
 
   if (cartQuantity > 0) {
     return (
-      <div className={`flex items-center gap-2 ${className}`}>
-        <Button variant="outline" size="sm" onClick={handleDecrement} className="h-8 w-8 p-0 bg-transparent">
+      <div className={`grid grid-cols-3 gap-1 w-full ${className}`}>
+        <Button 
+          variant="outline" 
+          size="sm" 
+          onClick={handleDecrement} 
+          className="h-8 w-full p-0 bg-primary hover:bg-primary/90 text-primary-foreground border-primary rounded"
+        >
           <Minus className="h-3 w-3" />
         </Button>
-        <span className="min-w-[2rem] text-center font-medium">{cartQuantity}</span>
+        <span className="min-w-[2rem] text-center font-medium text-sm flex items-center justify-center">{cartQuantity}</span>
         <Button
           variant="outline"
           size="sm"
           onClick={handleIncrement}
           disabled={cartQuantity >= product.quantity}
-          className="h-8 w-8 p-0"
+          className="h-8 w-full p-0 bg-primary hover:bg-primary/90 text-primary-foreground border-primary rounded disabled:opacity-50"
         >
           <Plus className="h-3 w-3" />
         </Button>

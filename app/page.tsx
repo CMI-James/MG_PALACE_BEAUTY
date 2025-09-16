@@ -1,5 +1,3 @@
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
 import { HeroSection } from "@/components/layout/hero-section"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -37,8 +35,6 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen">
-      <Header />
-
       <main>
         <HeroSection />
 
@@ -118,13 +114,13 @@ export default async function HomePage() {
                       <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full p-1">
                         <div className="flex items-center gap-1 text-xs font-medium text-secondary-foreground">
                           <Star className="h-3 w-3 fill-secondary text-secondary" />
-                          {product.rating}
+                          4.8
                         </div>
                       </div>
                     </div>
                   </CardHeader>
                   <CardContent className="p-4">
-                    <CardTitle className="text-base mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                    <CardTitle className="text-base mb-2 line-clamp-2 h-12 group-hover:text-primary transition-colors">
                       {product.name}
                     </CardTitle>
                     <div className="flex items-center gap-1 mb-2">
@@ -133,12 +129,12 @@ export default async function HomePage() {
                           <Star
                             key={i}
                             className={`h-4 w-4 ${
-                              i < Math.floor(product.rating) ? "fill-secondary text-secondary" : "text-muted-foreground"
+                              i < 4 ? "fill-secondary text-secondary" : "text-muted-foreground"
                             }`}
                           />
                         ))}
                       </div>
-                      <span className="text-sm text-muted-foreground">({product.reviews})</span>
+                      <span className="text-sm text-muted-foreground">(24)</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-lg text-primary">₦{product.price.toLocaleString()}</span>
@@ -150,7 +146,7 @@ export default async function HomePage() {
                     </div>
                   </CardContent>
                   <CardFooter className="p-4 pt-0">
-                    <AddToCartButton product={product} className="w-full bg-primary hover:bg-primary/90" size="sm" />
+                    <AddToCartButton product={product} className="w-full bg-transparent " size="sm" />
                   </CardFooter>
                 </Card>
               ))}
@@ -257,8 +253,6 @@ export default async function HomePage() {
           </div>
         </section>
       </main>
-
-      <Footer />
     </div>
   )
 }

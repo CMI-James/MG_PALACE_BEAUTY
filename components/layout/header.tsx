@@ -31,6 +31,7 @@ export function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
   const [user, setUser] = useState<any>(null)
+  const [userProfile, setUserProfile] = useState<any>(null)
   const [isAdmin, setIsAdmin] = useState(false)
   const supabase = createBrowserClient()
   const router = useRouter()
@@ -43,9 +44,13 @@ export function Header() {
       setUser(user)
 
       if (user) {
-        const { data: profile } = await supabase.from("user_profiles").select("role").eq("id", user.id).single()
-
-        setIsAdmin(profile?.role === "admin")
+        const { data: profile } = await supabase.from("profiles").select("first_name, is_admin").eq("id", user.id).single()
+        
+        console.log("User:", user)
+        console.log("Profile:", profile)
+        
+        setUserProfile(profile)
+        setIsAdmin(profile?.is_admin === true)
       }
     }
 
@@ -130,11 +135,19 @@ export function Header() {
               </Button>
             )}
 
+         
+
             {/* User Account */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <User className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  {user && userProfile?.first_name ? (
+                    <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold text-sm">
+                      {userProfile.first_name.charAt(0).toUpperCase()}
+                    </div>
+                  ) : (
+                    <User className="h-5 w-5" />
+                  )}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-48">

@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/footer"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
+import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb"
 import { getProductBySlug, getProducts } from "@/lib/supabase/queries"
 import { Heart, Share2, Truck, Shield, RotateCcw } from "lucide-react"
 import Link from "next/link"
@@ -32,30 +33,40 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   const hasDiscount = product.compare_price && product.compare_price > product.price
   const discountPercentage = hasDiscount
-    ? Math.round(((product.compare_price - product.price) / product.compare_price) * 100)
+    ? Math.round(((product.compare_price! - product.price) / product.compare_price!) * 100)
     : 0
 
   return (
     <div className="min-h-screen">
-      <Header />
+   
 
       <main className="container mx-auto px-4 py-8">
         {/* Breadcrumb */}
-        <nav className="flex items-center space-x-2 text-sm text-muted-foreground mb-8">
-          <Link href="/" className="hover:text-primary">
-            Home
-          </Link>
-          <span>/</span>
-          <Link href="/products" className="hover:text-primary">
-            Products
-          </Link>
-          <span>/</span>
-          <Link href={`/products?category=${product.category.slug}`} className="hover:text-primary">
-            {product.category.name}
-          </Link>
-          <span>/</span>
-          <span className="text-foreground">{product.name}</span>
-        </nav>
+        <Breadcrumb className="mb-8">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/products">Products</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href={`/products?category=${product.category.slug}`}>{product.category.name}</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{product.name}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
           {/* Product Images */}
@@ -188,7 +199,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <Link href={`/products?category=${product.category.slug}`}>View All in {product.category.name}</Link>
               </Button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
               {relatedProducts.map((relatedProduct) => (
                 <ProductCard key={relatedProduct.id} product={relatedProduct} />
               ))}
@@ -197,7 +208,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
         )}
       </main>
 
-      <Footer />
+     
     </div>
   )
 }

@@ -1,13 +1,10 @@
 import { Suspense } from "react"
-import { Header } from "@/components/layout/header"
-import { Footer } from "@/components/layout/footer"
-import { ProductCard } from "@/components/products/product-card"
+import { ProductsView } from "@/components/products/products-view"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Skeleton } from "@/components/ui/skeleton"
 import { getProducts, getCategories } from "@/lib/supabase/queries"
 import Link from "next/link"
-import { Filter, Grid, List } from "lucide-react"
+import { Filter } from "lucide-react"
 
 interface ProductsPageProps {
   searchParams: Promise<{
@@ -16,38 +13,9 @@ interface ProductsPageProps {
   }>
 }
 
-function ProductSkeleton() {
-  return (
-    <div className="space-y-4">
-      <Skeleton className="aspect-square w-full" />
-      <Skeleton className="h-4 w-3/4" />
-      <Skeleton className="h-4 w-1/2" />
-      <Skeleton className="h-10 w-full" />
-    </div>
-  )
-}
-
-async function ProductsGrid({ category, search }: { category?: string; search?: string }) {
+async function ProductsContent({ category, search }: { category?: string; search?: string }) {
   const products = await getProducts({ category, search })
-
-  if (products.length === 0) {
-    return (
-      <div className="col-span-full text-center py-12">
-        <p className="text-muted-foreground text-lg mb-4">No products found</p>
-        <Button asChild variant="outline">
-          <Link href="/products">View All Products</Link>
-        </Button>
-      </div>
-    )
-  }
-
-  return (
-    <>
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </>
-  )
+  return <ProductsView products={products} />
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
@@ -57,8 +25,6 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <div className="min-h-screen">
-      <Header />
-
       <main className="container mx-auto px-4 py-8">
         {/* Page Header */}
         <div className="mb-8">
@@ -81,20 +47,20 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 <Filter className="h-4 w-4 mr-2" />
                 Categories
               </h3>
-              <div className="space-y-2">
-                <Link href="/products">
+              <div className="space-y-4">
+                <Link href="/products" className="block ">
                   <Badge
                     variant={!params.category ? "default" : "outline"}
-                    className="w-full justify-start cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                    className="w-full justify-start cursor-pointer hover:bg-primary hover:text-primary-foreground text-sm py-2 px-3"
                   >
                     All Products
                   </Badge>
                 </Link>
                 {categories.map((category) => (
-                  <Link key={category.id} href={`/products?category=${category.slug}`}>
+                  <Link key={category.id} href={`/products?category=${category.slug}`} className="block mb-4">
                     <Badge
                       variant={params.category === category.slug ? "default" : "outline"}
-                      className="w-full justify-start cursor-pointer hover:bg-primary hover:text-primary-foreground"
+                      className="w-full justify-start cursor-pointer hover:bg-primary hover:text-primary-foreground text-sm py-2 px-3"
                     >
                       {category.name}
                     </Badge>
@@ -104,32 +70,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             </div>
           </aside>
 
-          {/* Products Grid */}
+          {/* Products View */}
           <div className="flex-1">
-            <div className="flex items-center justify-between mb-6">
-              <p className="text-sm text-muted-foreground">
-                Showing products {selectedCategory ? `in ${selectedCategory.name}` : ""}
-              </p>
-              <div className="flex items-center gap-2">
-                <Button variant="outline" size="sm">
-                  <Grid className="h-4 w-4" />
-                </Button>
-                <Button variant="ghost" size="sm">
-                  <List className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              <Suspense fallback={Array.from({ length: 8 }).map((_, i) => <ProductSkeleton key={i} />)}>
-                <ProductsGrid category={params.category} search={params.search} />
-              </Suspense>
-            </div>
+            <Suspense fallback={<ProductsView products={[]} isLoading={true} />}>
+              <ProductsContent category={params.category} search={params.search} />
+            </Suspense>
           </div>
         </div>
       </main>
-
-      <Footer />
     </div>
   )
 }
