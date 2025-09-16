@@ -9,7 +9,7 @@ export function HeroSection() {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url('https://placeholder.svg?height=600&width=1200&query=professional beauty salon with microblading tools and lash extensions')`,
+          backgroundImage: `url('/images/mg-hero.jpg')`,
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/40 to-black/50" />
