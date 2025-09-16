@@ -13,33 +13,33 @@ export default async function HomePage() {
   const categories = [
     {
       name: "Microblading Tools",
-      image: "https://placeholder.svg?height=200&width=300&query=microblading tools category",
+      image: "/images/microblading-tools.jpg",
       href: "/products?category=microblading-tools",
     },
     {
       name: "Lash Extensions",
-      image: "https://placeholder.svg?height=200&width=300&query=lash extensions category",
+      image: "/images/lash-extensions.jpg",
       href: "/products?category=lash-extensions",
     },
     {
       name: "Facial Treatments",
-      image: "https://placeholder.svg?height=200&width=300&query=facial treatments category",
+      image: "/images/facial-treatments.jpg",
       href: "/products?category=facial-treatments",
     },
     {
       name: "Beauty Accessories",
-      image: "https://placeholder.svg?height=200&width=300&query=beauty accessories category",
+      image: "/images/beauty-accessories.jpg",
       href: "/products?category=beauty-accessories",
     },
   ]
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-background">
       <main>
         <HeroSection />
 
         {/* Featured Categories */}
-        <section className="py-16 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+        <section className="py-16 bg-gradient-to-br from-primary/10 via-slate-100/50 to-secondary/10">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
@@ -78,7 +78,7 @@ export default async function HomePage() {
 
         {/* Featured Products */}
         <section className="py-16 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-secondary/5 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-secondary/10 to-transparent" />
           <div className="container mx-auto px-4 relative">
             <div className="text-center mb-12">
               <div className="inline-flex items-center gap-2 bg-secondary/20 text-secondary-foreground px-4 py-2 rounded-full text-sm font-medium mb-4">
@@ -166,7 +166,7 @@ export default async function HomePage() {
         </section>
 
         {/* Services Section */}
-        <section className="py-16 bg-gradient-to-br from-secondary/10 via-primary/5 to-secondary/10">
+        <section className="py-16 bg-gradient-to-br from-secondary/15 via-primary/10 to-secondary/15">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <div className="inline-flex items-center gap-2 bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
@@ -182,7 +182,7 @@ export default async function HomePage() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <Card className="text-center hover:shadow-lg transition-all duration-300 hover:shadow-primary/10 border-2 border-transparent hover:border-primary/20 bg-gradient-to-b from-background to-primary/5">
+              <Card className="text-center hover:shadow-lg transition-all duration-300 hover:shadow-primary/10 border-2 border-transparent hover:border-primary/20 bg-gradient-to-b from-slate-50 to-primary/10">
                 <CardHeader>
                   <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mb-4 shadow-lg">
                     <Sparkles className="h-8 w-8 text-primary-foreground" />
@@ -205,7 +205,7 @@ export default async function HomePage() {
                 </CardFooter>
               </Card>
 
-              <Card className="text-center hover:shadow-lg transition-all duration-300 hover:shadow-secondary/10 border-2 border-transparent hover:border-secondary/20 bg-gradient-to-b from-background to-secondary/5">
+              <Card className="text-center hover:shadow-lg transition-all duration-300 hover:shadow-secondary/10 border-2 border-transparent hover:border-secondary/20 bg-gradient-to-b from-slate-50 to-secondary/10">
                 <CardHeader>
                   <div className="mx-auto w-16 h-16 bg-gradient-to-br from-secondary to-secondary/80 rounded-full flex items-center justify-center mb-4 shadow-lg">
                     <Sparkles className="h-8 w-8 text-secondary-foreground" />
@@ -226,7 +226,7 @@ export default async function HomePage() {
                 </CardFooter>
               </Card>
 
-              <Card className="text-center hover:shadow-lg transition-all duration-300 hover:shadow-primary/10 border-2 border-transparent hover:border-primary/20 bg-gradient-to-b from-background to-primary/5">
+              <Card className="text-center hover:shadow-lg transition-all duration-300 hover:shadow-primary/10 border-2 border-transparent hover:border-primary/20 bg-gradient-to-b from-slate-50 to-primary/10">
                 <CardHeader>
                   <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mb-4 shadow-lg">
                     <Sparkles className="h-8 w-8 text-primary-foreground" />
