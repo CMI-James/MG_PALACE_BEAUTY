@@ -1,101 +1,264 @@
-import Image from "next/image";
+import { Header } from "@/components/layout/header"
+import { Footer } from "@/components/layout/footer"
+import { HeroSection } from "@/components/layout/hero-section"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
+import { Star, Calendar, Sparkles, TrendingUp, Award, Users } from "lucide-react"
+import { AddToCartButton } from "@/components/products/add-to-cart-button"
+import { getProducts } from "@/lib/supabase/queries"
 
-export default function Home() {
+export default async function HomePage() {
+  const featuredProducts = await getProducts({ featured: true, limit: 4 })
+
+  const categories = [
+    {
+      name: "Microblading Tools",
+      image: "https://placeholder.svg?height=200&width=300&query=microblading tools category",
+      href: "/products?category=microblading-tools",
+    },
+    {
+      name: "Lash Extensions",
+      image: "https://placeholder.svg?height=200&width=300&query=lash extensions category",
+      href: "/products?category=lash-extensions",
+    },
+    {
+      name: "Facial Treatments",
+      image: "https://placeholder.svg?height=200&width=300&query=facial treatments category",
+      href: "/products?category=facial-treatments",
+    },
+    {
+      name: "Beauty Accessories",
+      image: "https://placeholder.svg?height=200&width=300&query=beauty accessories category",
+      href: "/products?category=beauty-accessories",
+    },
+  ]
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="min-h-screen">
+      <Header />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+      <main>
+        <HeroSection />
+
+        {/* Featured Categories */}
+        <section className="py-16 bg-gradient-to-br from-primary/5 via-background to-secondary/5">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
+                <TrendingUp className="h-4 w-4" />
+                Popular Categories
+              </div>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4 text-balance">Shop by Category</h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Explore our curated collection of professional beauty tools and products
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {categories.map((category, index) => (
+                <Link key={category.name} href={category.href} className="group">
+                  <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:shadow-primary/10 border-l-4 border-l-transparent hover:border-l-primary">
+                    <div className="aspect-[4/3] overflow-hidden relative">
+                      <img
+                        src={category.image || "/placeholder.svg"}
+                        alt={category.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    </div>
+                    <CardHeader className="text-center bg-gradient-to-r from-primary/5 to-secondary/5">
+                      <CardTitle className="text-lg group-hover:text-primary transition-colors">
+                        {category.name}
+                      </CardTitle>
+                    </CardHeader>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Featured Products */}
+        <section className="py-16 relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-secondary/5 to-transparent" />
+          <div className="container mx-auto px-4 relative">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 bg-secondary/20 text-secondary-foreground px-4 py-2 rounded-full text-sm font-medium mb-4">
+                <Award className="h-4 w-4" />
+                Featured Products
+              </div>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4 text-balance">
+                Discover our most popular and highly-rated beauty tools
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Professional-grade tools trusted by beauty experts across Nigeria
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {featuredProducts.map((product, index) => (
+                <Card
+                  key={product.id}
+                  className="group hover:shadow-lg transition-all duration-300 hover:shadow-secondary/10 border-t-4 border-t-transparent hover:border-t-secondary"
+                >
+                  <CardHeader className="p-0">
+                    <div className="relative aspect-square overflow-hidden rounded-t-lg">
+                      <img
+                        src={product.images?.[0] || "/placeholder.svg"}
+                        alt={product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      {product.is_featured && (
+                        <Badge className="absolute top-2 left-2 bg-gradient-to-r from-secondary to-secondary/80 text-secondary-foreground shadow-lg">
+                          Featured
+                        </Badge>
+                      )}
+                      <div className="absolute top-2 right-2 bg-white/90 backdrop-blur-sm rounded-full p-1">
+                        <div className="flex items-center gap-1 text-xs font-medium text-secondary-foreground">
+                          <Star className="h-3 w-3 fill-secondary text-secondary" />
+                          {product.rating}
+                        </div>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="p-4">
+                    <CardTitle className="text-base mb-2 line-clamp-2 group-hover:text-primary transition-colors">
+                      {product.name}
+                    </CardTitle>
+                    <div className="flex items-center gap-1 mb-2">
+                      <div className="flex items-center">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`h-4 w-4 ${
+                              i < Math.floor(product.rating) ? "fill-secondary text-secondary" : "text-muted-foreground"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-sm text-muted-foreground">({product.reviews})</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-bold text-lg text-primary">₦{product.price.toLocaleString()}</span>
+                      {product.compare_price && product.compare_price > product.price && (
+                        <span className="text-sm text-muted-foreground line-through">
+                          ₦{product.compare_price.toLocaleString()}
+                        </span>
+                      )}
+                    </div>
+                  </CardContent>
+                  <CardFooter className="p-4 pt-0">
+                    <AddToCartButton product={product} className="w-full bg-primary hover:bg-primary/90" size="sm" />
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+
+            <div className="text-center mt-12">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-primary text-primary hover:bg-primary hover:text-primary-foreground bg-transparent"
+              >
+                <Link href="/products">View All Products</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Services Section */}
+        <section className="py-16 bg-gradient-to-br from-secondary/10 via-primary/5 to-secondary/10">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 bg-primary/20 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">
+                <Users className="h-4 w-4" />
+                Professional Services
+              </div>
+              <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4 text-balance">
+                Professional Beauty Services
+              </h2>
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Experience our expert beauty treatments and training courses
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <Card className="text-center hover:shadow-lg transition-all duration-300 hover:shadow-primary/10 border-2 border-transparent hover:border-primary/20 bg-gradient-to-b from-background to-primary/5">
+                <CardHeader>
+                  <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mb-4 shadow-lg">
+                    <Sparkles className="h-8 w-8 text-primary-foreground" />
+                  </div>
+                  <CardTitle className="text-primary">Microblading Services</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-4">
+                    Professional eyebrow enhancement with natural-looking results
+                  </p>
+                  <p className="font-bold text-lg text-secondary-foreground">From ₦80,000</p>
+                </CardContent>
+                <CardFooter>
+                  <Button asChild className="w-full bg-primary hover:bg-primary/90">
+                    <Link href="/services/microblading">
+                      <Calendar className="h-4 w-4 mr-2" />
+                      Book Now
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="text-center hover:shadow-lg transition-all duration-300 hover:shadow-secondary/10 border-2 border-transparent hover:border-secondary/20 bg-gradient-to-b from-background to-secondary/5">
+                <CardHeader>
+                  <div className="mx-auto w-16 h-16 bg-gradient-to-br from-secondary to-secondary/80 rounded-full flex items-center justify-center mb-4 shadow-lg">
+                    <Sparkles className="h-8 w-8 text-secondary-foreground" />
+                  </div>
+                  <CardTitle className="text-secondary-foreground">Lash Extensions</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-4">Classic and volume lash extensions for stunning eyes</p>
+                  <p className="font-bold text-lg text-primary">From ₦35,000</p>
+                </CardContent>
+                <CardFooter>
+                  <Button asChild className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground">
+                    <Link href="/services/lash-extensions">
+                      <Calendar className="h-4 w-4 mr-2" />
+                      Book Now
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+
+              <Card className="text-center hover:shadow-lg transition-all duration-300 hover:shadow-primary/10 border-2 border-transparent hover:border-primary/20 bg-gradient-to-b from-background to-primary/5">
+                <CardHeader>
+                  <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center mb-4 shadow-lg">
+                    <Sparkles className="h-8 w-8 text-primary-foreground" />
+                  </div>
+                  <CardTitle className="text-primary">Training Courses</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground mb-4">Professional certification courses for beauty artists</p>
+                  <p className="font-bold text-lg text-secondary-foreground">From ₦150,000</p>
+                </CardContent>
+                <CardFooter>
+                  <Button
+                    asChild
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                  >
+                    <Link href="/services/training">
+                      <Calendar className="h-4 w-4 mr-2" />
+                      Enroll Now
+                    </Link>
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+      <Footer />
     </div>
-  );
+  )
 }
