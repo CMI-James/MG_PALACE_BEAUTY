@@ -6,7 +6,7 @@ export async function checkTimeSlotAvailability(
   date: string,
   time: string
 ): Promise<boolean> {
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   const { data: appointments } = await supabase
     .from("appointments")
@@ -19,7 +19,7 @@ export async function checkTimeSlotAvailability(
 }
 
 export async function getAvailableTimeSlots(date: string): Promise<string[]> {
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   const allTimeSlots = [
     "09:00",
@@ -54,7 +54,7 @@ export async function getAvailableTimeSlots(date: string): Promise<string[]> {
 }
 
 export async function getBookedTimeSlots(date: string): Promise<string[]> {
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   const { data: appointments } = await supabase
     .from("appointments")

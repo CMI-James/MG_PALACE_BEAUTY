@@ -139,8 +139,8 @@ export default function ReturnsPage() {
                         Get Return Authorization
                       </h4>
                       <p className="text-sm text-muted-foreground">
-                        We'll provide you with a return authorization number and
-                        shipping instructions
+                        We&apos;ll provide you with a return authorization
+                        number and shipping instructions
                       </p>
                     </div>
                   </div>
@@ -192,8 +192,8 @@ export default function ReturnsPage() {
                   </h4>
                   <p className="text-sm text-muted-foreground">
                     If you receive a defective item, contact us immediately.
-                    We'll arrange for a replacement or full refund at no cost to
-                    you.
+                    We&apos;ll arrange for a replacement or full refund at no
+                    cost to you.
                   </p>
                 </div>
               </CardContent>
@@ -215,7 +215,9 @@ export default function ReturnsPage() {
                     Shipping costs are non-refundable (unless item was
                     defective)
                   </li>
-                  <li>Return shipping costs are customer's responsibility</li>
+                  <li>
+                    Return shipping costs are customer&apos;s responsibility
+                  </li>
                 </ul>
               </CardContent>
             </Card>

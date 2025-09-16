@@ -102,8 +102,8 @@ export default function ContactPage() {
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Have questions about our products or services? Want to book an
-              appointment or learn about our training courses? We'd love to hear
-              from you and help you on your beauty journey.
+              appointment or learn about our training courses? We&apos;d love to
+              hear from you and help you on your beauty journey.
             </p>
           </div>
         </section>
@@ -146,8 +146,8 @@ export default function ContactPage() {
                     Send Us a Message
                   </CardTitle>
                   <CardDescription>
-                    Fill out the form below and we'll get back to you as soon as
-                    possible.
+                    Fill out the form below and we&apos;ll get back to you as
+                    soon as possible.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -364,8 +364,8 @@ export default function ContactPage() {
                 <CardContent>
                   <p className="text-muted-foreground text-sm">
                     You can book appointments for all our services directly
-                    through our website. We'll confirm your booking within 24
-                    hours.
+                    through our website. We&apos;ll confirm your booking within
+                    24 hours.
                   </p>
                 </CardContent>
               </Card>

@@ -142,15 +142,10 @@ export default async function AdminAnalytics() {
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {recentOrders?.slice(0, 5).map(order => (
-                <div
-                  key={order.id}
-                  className="flex items-center justify-between"
-                >
+              {recentOrders?.slice(0, 5).map((order, index) => (
+                <div key={index} className="flex items-center justify-between">
                   <div>
-                    <p className="text-sm font-medium">
-                      Order #{order.id.slice(0, 8)}
-                    </p>
+                    <p className="text-sm font-medium">Order #{index + 1}</p>
                     <p className="text-xs text-muted-foreground">
                       {new Date(order.created_at).toLocaleDateString()}
                     </p>

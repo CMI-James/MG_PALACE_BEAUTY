@@ -11,7 +11,7 @@ export default async function AdminOrderDetail({
 }: {
   params: { id: string };
 }) {
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   const {
     data: { user },
@@ -114,7 +114,7 @@ export default async function AdminOrderDetail({
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {order.order_items?.map((item, index) => (
+                  {order.order_items?.map((item: any, index: number) => (
                     <div
                       key={index}
                       className="flex items-center space-x-4 p-4 border rounded-lg"
@@ -149,7 +149,7 @@ export default async function AdminOrderDetail({
               <CardContent>
                 {order.shipping_updates && order.shipping_updates.length > 0 ? (
                   <div className="space-y-4">
-                    {order.shipping_updates.map(update => (
+                    {order.shipping_updates.map((update: any) => (
                       <div
                         key={update.id}
                         className="border-l-2 border-primary pl-4"

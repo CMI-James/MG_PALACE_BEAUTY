@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/products/product-card";
 import { ProductListItem } from "@/components/products/product-list-item";
@@ -79,7 +80,7 @@ export function ProductsView({
       <div className="text-center py-12">
         <p className="text-muted-foreground text-lg mb-4">No products found</p>
         <Button asChild variant="outline">
-          <a href="/products">View All Products</a>
+          <Link href="/products">View All Products</Link>
         </Button>
       </div>
     );

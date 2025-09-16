@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, Clock } from "lucide-react";
 import { AccountAppointmentActions } from "@/components/booking/appointment-actions-client";
+import Link from "next/link";
 
 export default async function UserAppointments() {
   const supabase = await createServerClient();
@@ -149,7 +150,7 @@ export default async function UserAppointments() {
               Book your first service appointment to get started.
             </p>
             <Button asChild>
-              <a href="/services">Browse Services</a>
+              <Link href="/services">Browse Services</Link>
             </Button>
           </div>
         )}

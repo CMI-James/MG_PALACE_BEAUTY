@@ -87,9 +87,9 @@ export default function FAQPage() {
                       What are your operating hours?
                     </AccordionTrigger>
                     <AccordionContent>
-                      We're open Monday through Saturday from 9:00 AM to 7:00
-                      PM, and Sunday from 11:00 AM to 5:00 PM. Holiday hours may
-                      vary.
+                      We&apos;re open Monday through Saturday from 9:00 AM to
+                      7:00 PM, and Sunday from 11:00 AM to 5:00 PM. Holiday
+                      hours may vary.
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="item-4">
@@ -128,7 +128,7 @@ export default function FAQPage() {
                   </AccordionItem>
                   <AccordionItem value="service-2">
                     <AccordionTrigger>
-                      What's your cancellation policy?
+                      What&apos;s your cancellation policy?
                     </AccordionTrigger>
                     <AccordionContent>
                       We require 24-hour notice for cancellations. Cancellations
@@ -143,7 +143,8 @@ export default function FAQPage() {
                     <AccordionContent>
                       Appointment duration varies by service: microblading (2-3
                       hours), lash extensions (1.5-2 hours), brow shaping (30-45
-                      minutes). We'll provide specific timing when you book.
+                      minutes). We&apos;ll provide specific timing when you
+                      book.
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="service-4">
@@ -151,7 +152,7 @@ export default function FAQPage() {
                       Do I need to prepare for my appointment?
                     </AccordionTrigger>
                     <AccordionContent>
-                      Preparation varies by service. We'll provide specific
+                      Preparation varies by service. We&apos;ll provide specific
                       pre-appointment instructions when you book. Generally,
                       avoid caffeine and alcohol before procedures, and come
                       with clean skin.
@@ -221,7 +222,7 @@ export default function FAQPage() {
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="tech-1">
                     <AccordionTrigger>
-                      I'm having trouble with the website
+                      I&apos;m having trouble with the website
                     </AccordionTrigger>
                     <AccordionContent>
                       Try clearing your browser cache and cookies, or try a
@@ -234,9 +235,9 @@ export default function FAQPage() {
                       How do I track my order?
                     </AccordionTrigger>
                     <AccordionContent>
-                      You'll receive a tracking number via email once your order
-                      ships. You can also check your order status by logging
-                      into your account on our website.
+                      You&apos;ll receive a tracking number via email once your
+                      order ships. You can also check your order status by
+                      logging into your account on our website.
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="tech-3">
@@ -245,8 +246,8 @@ export default function FAQPage() {
                     </AccordionTrigger>
                     <AccordionContent>
                       Orders can be modified within 2 hours of placement if they
-                      haven't been processed yet. Contact us immediately at +234
-                      (0) 123 456 7890 for order changes.
+                      haven&apos;t been processed yet. Contact us immediately at
+                      +234 (0) 123 456 7890 for order changes.
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
@@ -259,8 +260,8 @@ export default function FAQPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground leading-relaxed">
-                  Can't find the answer you're looking for? Our customer support
-                  team is here to help.
+                  Can&apos;t find the answer you&apos;re looking for? Our
+                  customer support team is here to help.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center gap-3 p-4 bg-primary/5 rounded-lg">

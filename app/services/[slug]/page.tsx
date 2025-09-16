@@ -169,7 +169,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
 
             {/* Service Features */}
             <div>
-              <h3 className="font-semibold mb-3">What's Included:</h3>
+              <h3 className="font-semibold mb-3">What&apos;s Included:</h3>
               <ul className="space-y-2">
                 {serviceFeatures.map((feature, index) => (
                   <li key={index} className="flex items-center gap-2">

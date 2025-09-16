@@ -21,7 +21,8 @@ export default function SignUpSuccessPage() {
               </div>
               <CardTitle className="text-2xl">Check Your Email</CardTitle>
               <CardDescription>
-                We've sent you a verification link to complete your registration
+                We&apos;ve sent you a verification link to complete your
+                registration
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">

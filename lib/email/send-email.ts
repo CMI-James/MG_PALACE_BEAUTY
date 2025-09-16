@@ -33,7 +33,7 @@ export async function sendAppointmentEmail(
   type: "confirmation" | "cancellation" | "reschedule",
   oldData?: { date: string; time: string }
 ) {
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   // Get appointment details with user and service info
   const { data: appointment } = await supabase

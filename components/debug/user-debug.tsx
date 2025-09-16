@@ -54,7 +54,9 @@ export function UserDebug() {
       });
     } catch (error) {
       console.error("[v0] Debug error:", error);
-      setDebugInfo({ error: error.message });
+      setDebugInfo({
+        error: error instanceof Error ? error.message : String(error),
+      });
     } finally {
       setLoading(false);
     }

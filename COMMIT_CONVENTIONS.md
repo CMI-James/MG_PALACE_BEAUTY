@@ -29,6 +29,7 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org/) t
 ## Examples
 
 ### Good Examples
+
 ```
 feat(auth): Add user authentication system
 fix(api): Resolve 500 error in user endpoint
@@ -44,6 +45,7 @@ revert: Revert "feat(auth): Add user authentication system"
 ```
 
 ### Bad Examples
+
 ```
 ❌ add feature
 ❌ fixed bug

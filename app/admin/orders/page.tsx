@@ -126,7 +126,7 @@ export default async function AdminOrders() {
                     Products
                   </h4>
                   <div className="space-y-1">
-                    {order.order_items?.map((item, index) => (
+                    {order.order_items?.map((item: any, index: number) => (
                       <p key={index} className="text-sm">
                         {item.quantity}x {item.products?.name} - ₦
                         {item.price.toLocaleString()}

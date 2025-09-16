@@ -15,7 +15,8 @@ export function ProductListItem({ product }: ProductListItemProps) {
     product.compare_price && product.compare_price > product.price;
   const discountPercentage = hasDiscount
     ? Math.round(
-        ((product.compare_price - product.price) / product.compare_price) * 100
+        ((product.compare_price! - product.price) / product.compare_price!) *
+          100
       )
     : 0;
 

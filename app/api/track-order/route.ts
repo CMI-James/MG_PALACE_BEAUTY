@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const supabase = createServerClient();
+    const supabase = await createServerClient();
 
     // Get order with tracking number
     const { data: order, error: orderError } = await supabase

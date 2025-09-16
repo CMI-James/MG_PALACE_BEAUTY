@@ -55,8 +55,8 @@ export default async function OrdersPage() {
               <Package className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-lg font-semibold mb-2">No orders yet</h3>
               <p className="text-muted-foreground mb-6">
-                You haven't placed any orders yet. Start shopping to see your
-                orders here.
+                You haven&apos;t placed any orders yet. Start shopping to see
+                your orders here.
               </p>
               <Button asChild>
                 <Link href="/products">Start Shopping</Link>
@@ -124,7 +124,7 @@ export default async function OrdersPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {order.order_items?.map(item => (
+                    {order.order_items?.map((item: any) => (
                       <div
                         key={item.id}
                         className="flex items-center space-x-4"

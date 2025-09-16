@@ -26,7 +26,7 @@ export default async function OrderDetailPage({
     redirect("/auth/login");
   }
 
-  const supabase = createServerClient();
+  const supabase = await createServerClient();
 
   // Get order details with shipping updates
   const { data: order, error } = await supabase
@@ -235,7 +235,7 @@ export default async function OrderDetailPage({
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {order.order_items?.map(item => (
+                  {order.order_items?.map((item: any) => (
                     <div
                       key={item.id}
                       className="flex items-center space-x-4 p-4 border rounded-lg"
@@ -276,37 +276,39 @@ export default async function OrderDetailPage({
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    {order.shipping_updates.map((update, index) => (
-                      <div key={update.id}>
-                        <div className="flex items-start gap-3">
-                          <div className="flex items-center gap-2">
-                            {getStatusIcon(update.status)}
-                            <div className="flex-1">
-                              <p className="font-medium capitalize">
-                                {update.status}
-                              </p>
-                              {update.message && (
-                                <p className="text-sm text-muted-foreground">
-                                  {update.message}
+                    {order.shipping_updates.map(
+                      (update: any, index: number) => (
+                        <div key={update.id}>
+                          <div className="flex items-start gap-3">
+                            <div className="flex items-center gap-2">
+                              {getStatusIcon(update.status)}
+                              <div className="flex-1">
+                                <p className="font-medium capitalize">
+                                  {update.status}
                                 </p>
-                              )}
-                              {update.location && (
-                                <p className="text-sm text-muted-foreground flex items-center gap-1">
-                                  <MapPin className="h-3 w-3" />
-                                  {update.location}
+                                {update.message && (
+                                  <p className="text-sm text-muted-foreground">
+                                    {update.message}
+                                  </p>
+                                )}
+                                {update.location && (
+                                  <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                    <MapPin className="h-3 w-3" />
+                                    {update.location}
+                                  </p>
+                                )}
+                                <p className="text-xs text-muted-foreground">
+                                  {new Date(update.created_at).toLocaleString()}
                                 </p>
-                              )}
-                              <p className="text-xs text-muted-foreground">
-                                {new Date(update.created_at).toLocaleString()}
-                              </p>
+                              </div>
                             </div>
                           </div>
+                          {index < order.shipping_updates.length - 1 && (
+                            <Separator className="my-4" />
+                          )}
                         </div>
-                        {index < order.shipping_updates.length - 1 && (
-                          <Separator className="my-4" />
-                        )}
-                      </div>
-                    ))}
+                      )
+                    )}
                   </div>
                 </CardContent>
               </Card>

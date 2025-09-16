@@ -63,8 +63,9 @@ export function DeleteServiceButton({
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Service</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete "{serviceName}"? This action cannot
-            be undone and will also remove all associated appointments.
+            Are you sure you want to delete &quot;{serviceName}&quot;? This
+            action cannot be undone and will also remove all associated
+            appointments.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

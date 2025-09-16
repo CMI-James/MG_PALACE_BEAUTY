@@ -72,7 +72,7 @@ export default function AboutPage() {
             </h1>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               Your premier destination for professional beauty tools, expert
-              services, and comprehensive training. We're passionate about
+              services, and comprehensive training. We&apos;re passionate about
               empowering beauty professionals and enthusiasts across Nigeria
               with the finest products and exceptional service.
             </p>
@@ -133,8 +133,8 @@ export default function AboutPage() {
                 Why Choose Us
               </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                We're committed to excellence in everything we do, from product
-                quality to customer service
+                We&apos;re committed to excellence in everything we do, from
+                product quality to customer service
               </p>
             </div>
 
@@ -279,8 +279,8 @@ export default function AboutPage() {
               Ready to Start Your Beauty Journey?
             </h2>
             <p className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto">
-              Whether you're looking for premium tools, professional services,
-              or expert training, we're here to help you succeed.
+              Whether you&apos;re looking for premium tools, professional
+              services, or expert training, we&apos;re here to help you succeed.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button

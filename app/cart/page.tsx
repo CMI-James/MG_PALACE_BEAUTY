@@ -26,8 +26,8 @@ export default function CartPage() {
               Your cart is empty
             </h1>
             <p className="text-muted-foreground mb-6 sm:mb-8 text-sm sm:text-base">
-              Looks like you haven't added any products to your cart yet. Start
-              shopping to fill it up!
+              Looks like you haven&apos;t added any products to your cart yet.
+              Start shopping to fill it up!
             </p>
             <Button asChild size="lg" className="w-full sm:w-auto">
               <Link href="/products">

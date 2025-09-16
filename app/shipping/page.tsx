@@ -166,8 +166,8 @@ export default function ShippingPage() {
                   </h4>
                   <p className="text-muted-foreground leading-relaxed">
                     Large or specialized beauty equipment may require additional
-                    processing time and special handling. We'll contact you with
-                    specific delivery arrangements.
+                    processing time and special handling. We&apos;ll contact you
+                    with specific delivery arrangements.
                   </p>
                 </div>
                 <div>
@@ -203,4 +203,5 @@ export default function ShippingPage() {
         </div>
       </main>
     </div>
-  )}
+  );
+}

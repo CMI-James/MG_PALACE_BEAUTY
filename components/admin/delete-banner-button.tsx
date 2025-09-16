@@ -64,8 +64,8 @@ export function DeleteBannerButton({
         <AlertDialogHeader>
           <AlertDialogTitle>Delete Banner</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete the banner "{bannerTitle}"? This
-            action cannot be undone.
+            Are you sure you want to delete the banner &quot;{bannerTitle}
+            &quot;? This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
