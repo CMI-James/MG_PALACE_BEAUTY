@@ -203,5 +203,4 @@ export default function ShippingPage() {
         </div>
       </main>
     </div>
-  );
-}
+  )}
