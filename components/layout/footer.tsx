@@ -72,7 +72,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/booking" className="text-sm text-slate-300 hover:text-primary transition-colors">
+                <Link href="/account/appointments" className="text-sm text-slate-300 hover:text-primary transition-colors">
                   Book Appointment
                 </Link>
               </li>
