@@ -51,7 +51,7 @@ export function HeroSection() {
             asChild
             variant="outline"
             size="lg"
-            className="border-primary/50 text-white hover:bg-primary hover:text-primary-foreground bg-primary/10 backdrop-blur-sm hover:border-primary transition-all duration-300"
+            className="border-primary/50 text-white hover:bg-primary hover:text-primary-foreground bg-primary/30 backdrop-blur-sm hover:border-primary transition-all duration-300"
           >
             <Link href="/services">Book Service</Link>
           </Button>

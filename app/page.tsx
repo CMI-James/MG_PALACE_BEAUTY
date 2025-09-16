@@ -207,17 +207,17 @@ export default async function HomePage() {
 
               <Card className="text-center hover:shadow-lg transition-all duration-300 hover:shadow-secondary/10 border-2 border-transparent hover:border-secondary/20 bg-gradient-to-b from-slate-50 to-secondary/10">
                 <CardHeader>
-                  <div className="mx-auto w-16 h-16 bg-gradient-to-br from-secondary to-secondary/80 rounded-full flex items-center justify-center mb-4 shadow-lg">
-                    <Sparkles className="h-8 w-8 text-secondary-foreground" />
+                  <div className="mx-auto w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mb-4 shadow-lg">
+                    <Sparkles className="h-8 w-8 text-primary-foreground" />
                   </div>
                   <CardTitle className="text-secondary-foreground">Lash Extensions</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground mb-4">Classic and volume lash extensions for stunning eyes</p>
-                  <p className="font-bold text-lg text-primary">From ₦35,000</p>
+                  <p className="font-bold text-lg ">From ₦35,000</p>
                 </CardContent>
                 <CardFooter>
-                  <Button asChild className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground">
+                  <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground">
                     <Link href="/services/lash-extensions">
                       <Calendar className="h-4 w-4 mr-2" />
                       Book Now
